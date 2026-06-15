@@ -11,6 +11,7 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
       <div class="logo">
@@ -37,6 +38,7 @@
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
       <p class="hero-eyebrow">Твоят личен треньор</p>
@@ -45,27 +47,64 @@
     </div>
     <div class="hero-figure">
       <div class="hero-animation">
-        </div>
+        <svg class="hero-svg" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Тяло -->
+          <circle cx="100" cy="40" r="22" fill="#E8FF47" class="hero-head"/>
+          <!-- Торс -->
+          <rect x="75" y="65" width="50" height="70" rx="10" fill="#E8FF47" class="hero-torso"/>
+          <!-- Ляво рамо / мишница -->
+          <rect class="hero-arm-l" x="48" y="68" width="14" height="40" rx="7" fill="#c8df30"/>
+          <!-- Ляв лакът -->
+          <rect class="hero-forearm-l" x="48" y="108" width="14" height="35" rx="7" fill="#b0c825" transform-origin="48 108"/>
+          <!-- Дясно рамо / мишница -->
+          <rect class="hero-arm-r" x="138" y="68" width="14" height="40" rx="7" fill="#c8df30"/>
+          <!-- Десен лакът -->
+          <rect class="hero-forearm-r" x="138" y="108" width="14" height="35" rx="7" fill="#b0c825" transform-origin="152 108"/>
+          <!-- Ляво тегло -->
+          <rect class="hero-weight-l" x="34" y="136" width="22" height="10" rx="5" fill="#E8FF47"/>
+          <!-- Дясно тегло -->
+          <rect class="hero-weight-r" x="144" y="136" width="22" height="10" rx="5" fill="#E8FF47"/>
+          <!-- Таз -->
+          <rect x="78" y="132" width="44" height="30" rx="8" fill="#c8df30"/>
+          <!-- Ляв крак -->
+          <rect x="80" y="160" width="18" height="60" rx="9" fill="#E8FF47"/>
+          <!-- Десен крак -->
+          <rect x="102" y="160" width="18" height="60" rx="9" fill="#E8FF47"/>
+          <!-- Ляв крак долу -->
+          <rect x="80" y="215" width="18" height="40" rx="9" fill="#c8df30"/>
+          <!-- Десен крак долу -->
+          <rect x="102" y="215" width="18" height="40" rx="9" fill="#c8df30"/>
+          <!-- Обувки -->
+          <rect x="74" y="250" width="28" height="12" rx="6" fill="#888"/>
+          <rect x="98" y="250" width="28" height="12" rx="6" fill="#888"/>
+        </svg>
+      </div>
     </div>
   </section>
 
-  <main class="container">
-    <div class="group-header">
-      <div class="group-header-inner">
-        <div class="group-icon-wrap" id="groupIcon"></div>
-        <div>
-          <p class="group-label" id="groupLabel">Мускулна група</p>
-          <h2 class="group-name" id="groupName">Бицепс</h2>
-        </div>
-        <div class="group-stats">
-          <span class="gstat"><strong id="exCount">5</strong> упражнения</span>
-        </div>
+  <!-- МУСКУЛНА ГРУПА ХЕДЪР -->
+  <section class="group-header" id="groupHeader">
+    <div class="group-header-inner">
+      <div class="group-icon-wrap" id="groupIconWrap">
+        <!-- иконата се инжектира от JS -->
+      </div>
+      <div>
+        <p class="group-label" id="groupLabel">Мускулна група</p>
+        <h2 class="group-name" id="groupName">Бицепс</h2>
+      </div>
+      <div class="group-stats">
+        <span class="gstat"><strong id="exCount">5</strong> упражнения</span>
+        <span class="gstat"><strong id="musclesHit">2</strong> мускула</span>
       </div>
     </div>
+  </section>
 
-    <div class="exercises-grid" id="exercisesGrid"></div>
+  <!-- УПРАЖНЕНИЯ ГРИД -->
+  <main class="exercises-grid" id="exercisesGrid">
+    <!-- Попълва се от JS -->
   </main>
 
+  <!-- МОДАЛЕН ПРОЗОРЕЦ -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal" id="modal">
       <button class="modal-close" id="modalClose">✕</button>
@@ -104,7 +143,7 @@
     </div>
   </div>
 
-  <script src="data.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
