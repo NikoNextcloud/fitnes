@@ -1,4 +1,4 @@
-// app.js — IronForm логика + Canvas анимации
+// app.js — IronForm логика + Canvas анимации (женска фигура v2)
 
 /* =====================================================
    CANVAS АНИМАЦИОНЕН ДВИГАТЕЛ
@@ -11,14 +11,21 @@ class ExerciseAnimator {
     this.type    = animType;
     this.frame   = 0;
     this.reps    = 0;
-    this.phase   = 0; // 0 = надолу, 1 = нагоре
+    this.phase   = 0;
     this.rafId   = null;
     this.onRep   = null;
     this.W       = canvas.width;
     this.H       = canvas.height;
+    this._lastHalf = -1;
   }
 
-  start() { this.loop(); }
+  start() {
+    this.frame = 0;
+    this.reps  = 0;
+    this.phase = 0;
+    this._lastHalf = -1;
+    this.loop();
+  }
 
   stop() {
     if (this.rafId) cancelAnimationFrame(this.rafId);
@@ -26,6 +33,7 @@ class ExerciseAnimator {
     this.frame = 0;
     this.reps  = 0;
     this.phase = 0;
+    this._lastHalf = -1;
     this.ctx.clearRect(0, 0, this.W, this.H);
   }
 
@@ -35,13 +43,10 @@ class ExerciseAnimator {
     this.rafId = requestAnimationFrame(() => this.loop());
   }
 
-  // ease функция
   ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
-  // t: 0→1 oscillation (full cycle)
   cycle(speed = 0.012) {
-    const raw = ((this.frame * speed) % 1);
-    // Брои повторения при смяна на посока
+    const raw  = ((this.frame * speed) % 1);
     const half = Math.floor(this.frame * speed * 2);
     if (half > this._lastHalf) {
       this._lastHalf = half;
@@ -53,132 +58,270 @@ class ExerciseAnimator {
     return raw < 0.5 ? this.ease(raw * 2) : this.ease((1 - raw) * 2);
   }
 
-  // Рисува фигура
-  drawFigure(cx, cy, {
-    headY = 0, torsoAngle = 0,
-    leftArm = 0, rightArm = 0,
-    leftFore = 0, rightFore = 0,
-    leftLeg = 0, rightLeg = 0,
-    leftShin = 0, rightShin = 0,
-    colors = {}
-  } = {}) {
-    const c  = this.ctx;
-    const ac = colors.accent  || "#E8FF47";
-    const dc = colors.dark    || "#c8df30";
-    const bc = colors.body    || "#b0c825";
-    const eq = colors.equip   || "#555";
+  /* --------------------------------------------------
+     ЖЕНСКА ФИГУРА — детайлна 2D векторна
+  -------------------------------------------------- */
+  drawFigure(cx, cy, opts = {}) {
+    const {
+      headY       = 0,
+      torsoAngle  = 0,
+      leftArm     = 0,  rightArm  = 0,
+      leftFore    = 0,  rightFore = 0,
+      leftLeg     = 0,  rightLeg  = 0,
+      leftShin    = 0,  rightShin = 0,
+      colors      = {}
+    } = opts;
+
+    const c   = this.ctx;
+    const ac  = colors.accent || "#E8FF47";   // жълто — основен цвят
+    const sk  = colors.skin   || "#F4C17A";   // кожен тон
+    const clo = colors.cloth  || "#c8df30";   // спортно облекло (по-тъмно)
+    const leg = colors.legs   || "#7ec8e3";   // клин/леггинси — светлосиньо
+    const sho = colors.shoe   || "#444";      // обувки
+    const hai = colors.hair   || "#3a2a1a";   // коса
 
     c.save();
     c.translate(cx, cy + headY);
     c.rotate(torsoAngle);
 
-    // Голова
-    c.beginPath();
-    c.arc(0, -90, 16, 0, Math.PI * 2);
-    c.fillStyle = ac;
-    c.fill();
-
-    // Шия
-    c.fillStyle = dc;
-    c.fillRect(-5, -74, 10, 14);
-
-    // Торс
-    c.beginPath();
-    c.roundRect(-22, -60, 44, 54, 8);
-    c.fillStyle = ac;
-    c.fill();
-
-    // Таз
-    c.beginPath();
-    c.roundRect(-18, -8, 36, 22, 6);
-    c.fillStyle = dc;
-    c.fill();
-
-    // Ляво рамо
-    c.save();
-    c.translate(-26, -50);
-    c.rotate(leftArm);
-    c.beginPath();
-    c.roundRect(-6, 0, 12, 36, 6);
-    c.fillStyle = dc;
-    c.fill();
-    // Ляв лакът
-    c.save();
-    c.translate(0, 36);
-    c.rotate(leftFore);
-    c.beginPath();
-    c.roundRect(-6, 0, 12, 30, 6);
-    c.fillStyle = bc;
-    c.fill();
-    c.restore();
-    c.restore();
-
-    // Дясно рамо
-    c.save();
-    c.translate(26, -50);
-    c.rotate(rightArm);
-    c.beginPath();
-    c.roundRect(-6, 0, 12, 36, 6);
-    c.fillStyle = dc;
-    c.fill();
-    // Десен лакът
-    c.save();
-    c.translate(0, 36);
-    c.rotate(rightFore);
-    c.beginPath();
-    c.roundRect(-6, 0, 12, 30, 6);
-    c.fillStyle = bc;
-    c.fill();
-    c.restore();
-    c.restore();
-
+    // ─── КРАКА (рисуваме отдолу нагоре — за слоеве) ────────────────
     // Ляв крак
     c.save();
-    c.translate(-12, 14);
+    c.translate(-11, 14);
     c.rotate(leftLeg);
+    // Бедро
     c.beginPath();
-    c.roundRect(-8, 0, 16, 44, 8);
-    c.fillStyle = ac;
+    c.ellipse(0, 22, 9, 24, 0, 0, Math.PI * 2);
+    c.fillStyle = leg;
     c.fill();
-    // Ляв прасец
+    // Прасец
     c.save();
     c.translate(0, 44);
     c.rotate(leftShin);
     c.beginPath();
-    c.roundRect(-8, 0, 16, 36, 8);
-    c.fillStyle = dc;
+    c.ellipse(0, 18, 7, 20, 0, 0, Math.PI * 2);
+    c.fillStyle = leg;
+    c.fill();
+    // Блясък на леггинса
+    c.fillStyle = "rgba(255,255,255,0.10)";
+    c.beginPath();
+    c.ellipse(-2, 12, 3, 12, -0.2, 0, Math.PI * 2);
     c.fill();
     // Обувка
+    c.fillStyle = sho;
     c.beginPath();
-    c.roundRect(-10, 34, 22, 10, 4);
+    c.roundRect(-9, 34, 20, 9, 4);
+    c.fill();
     c.fillStyle = "#666";
+    c.beginPath();
+    c.roundRect(-9, 34, 5, 4, 2);
     c.fill();
     c.restore();
     c.restore();
 
     // Десен крак
     c.save();
-    c.translate(12, 14);
+    c.translate(11, 14);
     c.rotate(rightLeg);
     c.beginPath();
-    c.roundRect(-8, 0, 16, 44, 8);
-    c.fillStyle = ac;
+    c.ellipse(0, 22, 9, 24, 0, 0, Math.PI * 2);
+    c.fillStyle = leg;
     c.fill();
-    // Десен прасец
     c.save();
     c.translate(0, 44);
     c.rotate(rightShin);
     c.beginPath();
-    c.roundRect(-8, 0, 16, 36, 8);
-    c.fillStyle = dc;
+    c.ellipse(0, 18, 7, 20, 0, 0, Math.PI * 2);
+    c.fillStyle = leg;
     c.fill();
-    // Обувка
+    c.fillStyle = "rgba(255,255,255,0.10)";
     c.beginPath();
-    c.roundRect(-10, 34, 22, 10, 4);
+    c.ellipse(-2, 12, 3, 12, -0.2, 0, Math.PI * 2);
+    c.fill();
+    c.fillStyle = sho;
+    c.beginPath();
+    c.roundRect(-9, 34, 20, 9, 4);
+    c.fill();
     c.fillStyle = "#666";
+    c.beginPath();
+    c.roundRect(4, 34, 5, 4, 2);
     c.fill();
     c.restore();
     c.restore();
+
+    // ─── ТАЗ / ХИП ──────────────────────────────────────────────────
+    // Характерни женски бедра — по-широки
+    c.beginPath();
+    c.ellipse(0, 10, 21, 14, 0, 0, Math.PI * 2);
+    c.fillStyle = clo;
+    c.fill();
+
+    // ─── ТОРС ───────────────────────────────────────────────────────
+    // Спортен сутиен / топ — женска форма: тапер нагоре
+    c.beginPath();
+    c.moveTo(-20, 0);
+    c.bezierCurveTo(-22, -20, -16, -52, -13, -60);
+    c.bezierCurveTo(-8, -65, 8, -65, 13, -60);
+    c.bezierCurveTo(16, -52, 22, -20, 20, 0);
+    c.closePath();
+    c.fillStyle = clo;
+    c.fill();
+
+    // Спортен сутиен — горна линия
+    c.beginPath();
+    c.moveTo(-14, -56);
+    c.bezierCurveTo(-10, -68, 10, -68, 14, -56);
+    c.fillStyle = ac;
+    c.fill();
+
+    // Коремни мускули — леки линии
+    c.strokeStyle = "rgba(0,0,0,0.18)";
+    c.lineWidth = 1.2;
+    for (let i = 0; i < 3; i++) {
+      c.beginPath();
+      c.moveTo(-6, -40 + i * 13);
+      c.lineTo(6,  -40 + i * 13);
+      c.stroke();
+    }
+    c.beginPath();
+    c.moveTo(0, -40);
+    c.lineTo(0, -14);
+    c.stroke();
+
+    // ─── ЛЯВО РАМО И РЪКА ───────────────────────────────────────────
+    c.save();
+    c.translate(-20, -52);
+    c.rotate(leftArm);
+
+    // Мишница — по-тонка, женски
+    c.beginPath();
+    c.ellipse(0, 17, 7, 18, 0, 0, Math.PI * 2);
+    c.fillStyle = sk;
+    c.fill();
+    // Форма на мишница (highlight)
+    c.fillStyle = "rgba(255,255,255,0.12)";
+    c.beginPath();
+    c.ellipse(-2, 10, 3, 10, -0.1, 0, Math.PI * 2);
+    c.fill();
+
+    // Предмишница
+    c.save();
+    c.translate(0, 34);
+    c.rotate(leftFore);
+    c.beginPath();
+    c.ellipse(0, 14, 5.5, 16, 0, 0, Math.PI * 2);
+    c.fillStyle = sk;
+    c.fill();
+    c.restore();
+    c.restore();
+
+    // ─── ДЯСНО РАМО И РЪКА ──────────────────────────────────────────
+    c.save();
+    c.translate(20, -52);
+    c.rotate(rightArm);
+    c.beginPath();
+    c.ellipse(0, 17, 7, 18, 0, 0, Math.PI * 2);
+    c.fillStyle = sk;
+    c.fill();
+    c.fillStyle = "rgba(255,255,255,0.12)";
+    c.beginPath();
+    c.ellipse(-2, 10, 3, 10, -0.1, 0, Math.PI * 2);
+    c.fill();
+
+    c.save();
+    c.translate(0, 34);
+    c.rotate(rightFore);
+    c.beginPath();
+    c.ellipse(0, 14, 5.5, 16, 0, 0, Math.PI * 2);
+    c.fillStyle = sk;
+    c.fill();
+    c.restore();
+    c.restore();
+
+    // ─── ВРАТ ───────────────────────────────────────────────────────
+    c.beginPath();
+    c.ellipse(0, -67, 5, 9, 0, 0, Math.PI * 2);
+    c.fillStyle = sk;
+    c.fill();
+
+    // ─── ГЛАВА ──────────────────────────────────────────────────────
+    // Лице (по-заоблено, женски)
+    c.beginPath();
+    c.ellipse(0, -88, 14, 16, 0, 0, Math.PI * 2);
+    c.fillStyle = sk;
+    c.fill();
+
+    // Коса — конска опашка (характерно за спорт)
+    // Основа на косата
+    c.beginPath();
+    c.ellipse(0, -96, 14, 10, 0, 0, Math.PI);
+    c.fillStyle = hai;
+    c.fill();
+    // Страни на косата
+    c.beginPath();
+    c.ellipse(-10, -90, 6, 12, -0.3, 0, Math.PI * 2);
+    c.fillStyle = hai;
+    c.fill();
+    c.beginPath();
+    c.ellipse(10, -90, 6, 12, 0.3, 0, Math.PI * 2);
+    c.fillStyle = hai;
+    c.fill();
+
+    // Конска опашка — накланяща се с движение
+    c.save();
+    c.translate(0, -98);
+    const ponytailSwing = Math.sin(this.frame * 0.08) * 0.18;
+    c.rotate(0.5 + ponytailSwing);
+    c.beginPath();
+    c.moveTo(0, 0);
+    c.bezierCurveTo(8, 10, 12, 22, 8, 34);
+    c.lineWidth = 7;
+    c.strokeStyle = hai;
+    c.lineCap = "round";
+    c.stroke();
+    c.beginPath();
+    c.moveTo(8, 34);
+    c.bezierCurveTo(12, 42, 10, 50, 6, 56);
+    c.lineWidth = 4;
+    c.stroke();
+    // Ластик
+    c.beginPath();
+    c.arc(4, 10, 3, 0, Math.PI * 2);
+    c.fillStyle = ac;
+    c.fill();
+    c.restore();
+
+    // Очи
+    c.fillStyle = "#333";
+    c.beginPath();
+    c.ellipse(-5, -90, 2.5, 1.8, 0, 0, Math.PI * 2);
+    c.fill();
+    c.beginPath();
+    c.ellipse(5, -90, 2.5, 1.8, 0, 0, Math.PI * 2);
+    c.fill();
+    // Блясък в очите
+    c.fillStyle = "#fff";
+    c.beginPath();
+    c.arc(-4, -91, 0.8, 0, Math.PI * 2);
+    c.fill();
+    c.beginPath();
+    c.arc(6, -91, 0.8, 0, Math.PI * 2);
+    c.fill();
+
+    // Уста — малка усмивка
+    c.beginPath();
+    c.arc(0, -83, 4, 0.2, Math.PI - 0.2);
+    c.strokeStyle = "#c07050";
+    c.lineWidth = 1.5;
+    c.stroke();
+
+    // ─── СЛУШАЛКИ / WRISTBAND (спортна нотка) ───────────────────────
+    c.fillStyle = ac;
+    // Лента на главата
+    c.beginPath();
+    c.ellipse(0, -97, 14.5, 4, 0, 0.1, Math.PI - 0.1);
+    c.fillStyle = ac;
+    c.fill();
 
     c.restore();
   }
@@ -190,39 +333,54 @@ class ExerciseAnimator {
     c.translate(x, y);
     c.rotate(angle);
     c.fillStyle = color;
-    c.beginPath(); c.roundRect(-20, -5, 40, 10, 3); c.fill();
-    c.beginPath(); c.roundRect(-26, -9, 12, 18, 4); c.fill();
-    c.beginPath(); c.roundRect(14, -9, 12, 18, 4); c.fill();
+    // Дръжка
+    c.beginPath(); c.roundRect(-18, -4, 36, 8, 3); c.fill();
+    // Тежести
+    c.fillStyle = "#666";
+    c.beginPath(); c.roundRect(-24, -8, 10, 16, 4); c.fill();
+    c.beginPath(); c.roundRect(14, -8, 10, 16, 4); c.fill();
+    // Блясък
+    c.fillStyle = "rgba(255,255,255,0.2)";
+    c.beginPath(); c.roundRect(-24, -8, 3, 6, 2); c.fill();
     c.restore();
   }
 
   // Рисува щанга
   drawBarbell(x, y, width = 140) {
     const c = this.ctx;
-    c.fillStyle = "#777";
-    c.beginPath(); c.roundRect(x - width/2, y - 5, width, 10, 3); c.fill();
+    c.fillStyle = "#888";
+    c.beginPath(); c.roundRect(x - width/2, y - 4, width, 8, 3); c.fill();
     c.fillStyle = "#555";
-    c.beginPath(); c.roundRect(x - width/2 - 18, y - 12, 16, 24, 5); c.fill();
-    c.beginPath(); c.roundRect(x + width/2 + 2, y - 12, 16, 24, 5); c.fill();
+    c.beginPath(); c.roundRect(x - width/2 - 16, y - 11, 14, 22, 5); c.fill();
+    c.beginPath(); c.roundRect(x + width/2 + 2,  y - 11, 14, 22, 5); c.fill();
+    // Блясък
+    c.fillStyle = "rgba(255,255,255,0.15)";
+    c.beginPath(); c.roundRect(x - width/2, y - 4, width * 0.4, 3, 1); c.fill();
   }
 
   // Фон
   drawBg() {
     const c = this.ctx;
-    c.fillStyle = "#121212";
+    // Градиентен фон
+    const grad = c.createLinearGradient(0, 0, 0, this.H);
+    grad.addColorStop(0, "#111111");
+    grad.addColorStop(1, "#1a1a1a");
+    c.fillStyle = grad;
     c.fillRect(0, 0, this.W, this.H);
-    // Под
+    // Под с линия
     c.fillStyle = "#1e1e1e";
-    c.fillRect(0, this.H - 24, this.W, 24);
-    c.fillStyle = "#2a2a2a";
-    c.fillRect(0, this.H - 26, this.W, 3);
+    c.fillRect(0, this.H - 22, this.W, 22);
+    c.fillStyle = "#E8FF47";
+    c.fillRect(0, this.H - 24, this.W, 2);
+    c.globalAlpha = 0.15;
+    c.fillStyle = "#E8FF47";
+    c.fillRect(0, this.H - 24, this.W, 8);
+    c.globalAlpha = 1;
   }
 
   draw() {
-    if (!this._lastHalf) this._lastHalf = -1;
     this.drawBg();
-    const t = this.cycle(0.014);
-
+    const t  = this.cycle(0.014);
     const cx = this.W / 2;
     const cy = this.H / 2 + 10;
 
@@ -231,7 +389,7 @@ class ExerciseAnimator {
       case "curl":
       case "hammer":
       case "cable": {
-        const angle = t * 1.9; // лакетна ставна нагоре
+        const angle = t * 1.9;
         this.drawBarbell(cx, cy - 10 + t * (-40));
         this.drawFigure(cx, cy, {
           leftArm: 0.1, rightArm: -0.1,
@@ -242,8 +400,8 @@ class ExerciseAnimator {
 
       case "incline-curl": {
         const a = t * 1.8;
-        this.drawDumbbell(cx - 50, cy + 30 - t * 45, 0);
-        this.drawDumbbell(cx + 50, cy + 30 - t * 45, 0);
+        this.drawDumbbell(cx - 46, cy + 25 - t * 42, 0);
+        this.drawDumbbell(cx + 46, cy + 25 - t * 42, 0);
         this.drawFigure(cx, cy + 10, {
           torsoAngle: 0.6,
           leftArm: 1.2, rightArm: -1.2,
@@ -254,7 +412,7 @@ class ExerciseAnimator {
 
       case "concentration": {
         const a = t * 1.9;
-        this.drawDumbbell(cx - 20, cy + 20 - t * 50, 0);
+        this.drawDumbbell(cx - 18, cy + 18 - t * 48, 0);
         this.drawFigure(cx, cy + 5, {
           leftArm: 0.8, rightArm: -0.1,
           leftFore: -a, rightFore: 0.1,
@@ -265,7 +423,7 @@ class ExerciseAnimator {
 
       case "skull-crusher": {
         const a = t * 1.4;
-        this.drawBarbell(cx, cy - 60 - t * 30, 90);
+        this.drawBarbell(cx, cy - 55 - t * 28, 90);
         this.drawFigure(cx, cy + 20, {
           leftArm: -1.6, rightArm: 1.6,
           leftFore: a - 1.4, rightFore: -(a - 1.4),
@@ -276,7 +434,7 @@ class ExerciseAnimator {
 
       case "close-grip": {
         const a = t * 0.8;
-        this.drawBarbell(cx, cy - 55 - a * 25);
+        this.drawBarbell(cx, cy - 52 - a * 24);
         this.drawFigure(cx, cy + 20, {
           leftArm: -1.4 + a, rightArm: 1.4 - a,
           leftFore: 0.3, rightFore: -0.3,
@@ -287,7 +445,7 @@ class ExerciseAnimator {
 
       case "overhead": {
         const a = t * 1.2;
-        this.drawDumbbell(cx, cy - 90 - a * 10, 0, "#999");
+        this.drawDumbbell(cx, cy - 86 - a * 10, 0, "#999");
         this.drawFigure(cx, cy, {
           leftArm: -2.8 + a * 0.5, rightArm: 2.8 - a * 0.5,
           leftFore: a * 0.6, rightFore: -a * 0.6,
@@ -297,11 +455,10 @@ class ExerciseAnimator {
 
       case "pushdown": {
         const a = t * 1.3;
-        // кабел горе
         const c2 = this.ctx;
         c2.strokeStyle = "#555";
         c2.lineWidth = 3;
-        c2.beginPath(); c2.moveTo(cx, 0); c2.lineTo(cx, cy - 60); c2.stroke();
+        c2.beginPath(); c2.moveTo(cx, 0); c2.lineTo(cx, cy - 56); c2.stroke();
         this.drawFigure(cx, cy, {
           leftArm: 0.2, rightArm: -0.2,
           leftFore: a - 0.2, rightFore: -(a - 0.2),
@@ -312,14 +469,13 @@ class ExerciseAnimator {
       case "dips":
       case "chest-dips": {
         const a = t * 0.8;
-        // успоредки
         const c3 = this.ctx;
         c3.strokeStyle = "#444";
         c3.lineWidth = 8;
-        c3.beginPath(); c3.moveTo(cx - 55, cy - 40); c3.lineTo(cx - 55, cy + 80); c3.stroke();
-        c3.beginPath(); c3.moveTo(cx + 55, cy - 40); c3.lineTo(cx + 55, cy + 80); c3.stroke();
-        c3.beginPath(); c3.moveTo(cx - 55, cy - 40); c3.lineTo(cx + 55, cy - 40); c3.stroke();
-        this.drawFigure(cx, cy - 20 + a * 30, {
+        c3.beginPath(); c3.moveTo(cx - 52, cy - 40); c3.lineTo(cx - 52, cy + 80); c3.stroke();
+        c3.beginPath(); c3.moveTo(cx + 52, cy - 40); c3.lineTo(cx + 52, cy + 80); c3.stroke();
+        c3.beginPath(); c3.moveTo(cx - 52, cy - 40); c3.lineTo(cx + 52, cy - 40); c3.stroke();
+        this.drawFigure(cx, cy - 18 + a * 28, {
           leftArm: -1.2 + a * 0.5, rightArm: 1.2 - a * 0.5,
           leftFore: a, rightFore: -a,
           leftLeg: 0.3, rightLeg: -0.3,
@@ -330,7 +486,7 @@ class ExerciseAnimator {
 
       case "ohp": {
         const a = t * 0.9;
-        this.drawBarbell(cx, cy - 60 - a * 40);
+        this.drawBarbell(cx, cy - 58 - a * 38);
         this.drawFigure(cx, cy, {
           leftArm: -2.4 + a * 0.4, rightArm: 2.4 - a * 0.4,
           leftFore: -0.2, rightFore: 0.2,
@@ -340,8 +496,8 @@ class ExerciseAnimator {
 
       case "lateral": {
         const a = t * 0.8;
-        this.drawDumbbell(cx - 60 + a * (-10), cy - 20 - a * 30, -a * 0.3);
-        this.drawDumbbell(cx + 60 + a * 10,  cy - 20 - a * 30,  a * 0.3);
+        this.drawDumbbell(cx - 56 + a * (-10), cy - 18 - a * 28, -a * 0.3);
+        this.drawDumbbell(cx + 56 + a * 10,    cy - 18 - a * 28,  a * 0.3);
         this.drawFigure(cx, cy, {
           leftArm: -a, rightArm: a,
           leftFore: -0.1, rightFore: 0.1,
@@ -351,8 +507,8 @@ class ExerciseAnimator {
 
       case "front-raise": {
         const a = t * 0.9;
-        this.drawDumbbell(cx - 22, cy - 20 - a * 50, 0);
-        this.drawDumbbell(cx + 22, cy - 20 - a * 50, 0);
+        this.drawDumbbell(cx - 20, cy - 18 - a * 48, 0);
+        this.drawDumbbell(cx + 20, cy - 18 - a * 48, 0);
         this.drawFigure(cx, cy, {
           leftArm: -a, rightArm: -a,
           leftFore: 0.1, rightFore: 0.1,
@@ -365,7 +521,7 @@ class ExerciseAnimator {
         const c4 = this.ctx;
         c4.strokeStyle = "#555";
         c4.lineWidth = 3;
-        c4.beginPath(); c4.moveTo(this.W - 10, cy - 40); c4.lineTo(cx + 40, cy - 60 + a * 10); c4.stroke();
+        c4.beginPath(); c4.moveTo(this.W - 10, cy - 40); c4.lineTo(cx + 38, cy - 56 + a * 10); c4.stroke();
         this.drawFigure(cx, cy, {
           leftArm: -0.4 - a * 0.3, rightArm: 0.4 + a * 0.3,
           leftFore: -0.8 + a, rightFore: 0.8 - a,
@@ -375,8 +531,8 @@ class ExerciseAnimator {
 
       case "arnold": {
         const a = t * 0.8;
-        this.drawDumbbell(cx - 30, cy - 50 - a * 30, -a * 0.5);
-        this.drawDumbbell(cx + 30, cy - 50 - a * 30, a * 0.5);
+        this.drawDumbbell(cx - 28, cy - 48 - a * 28, -a * 0.5);
+        this.drawDumbbell(cx + 28, cy - 48 - a * 28,  a * 0.5);
         this.drawFigure(cx, cy, {
           leftArm: -1.4 + a * 0.3, rightArm: 1.4 - a * 0.3,
           leftFore: -0.3, rightFore: 0.3,
@@ -387,13 +543,13 @@ class ExerciseAnimator {
       case "pullup": {
         const a = t * 0.7;
         const c5 = this.ctx;
-        c5.fillStyle = "#444";
-        c5.fillRect(cx - 60, 10, 120, 12);
+        c5.fillStyle = "#333";
+        c5.fillRect(cx - 58, 10, 116, 12);
         c5.strokeStyle = "#555";
         c5.lineWidth = 4;
-        c5.beginPath(); c5.moveTo(cx - 20, 22); c5.lineTo(cx - 20, cy - 80 + a * 20); c5.stroke();
-        c5.beginPath(); c5.moveTo(cx + 20, 22); c5.lineTo(cx + 20, cy - 80 + a * 20); c5.stroke();
-        this.drawFigure(cx, cy + a * 20, {
+        c5.beginPath(); c5.moveTo(cx - 20, 22); c5.lineTo(cx - 20, cy - 78 + a * 18); c5.stroke();
+        c5.beginPath(); c5.moveTo(cx + 20, 22); c5.lineTo(cx + 20, cy - 78 + a * 18); c5.stroke();
+        this.drawFigure(cx, cy + a * 18, {
           leftArm: -2.6 + a * 0.5, rightArm: 2.6 - a * 0.5,
           leftFore: 0.2, rightFore: -0.2,
         });
@@ -402,7 +558,7 @@ class ExerciseAnimator {
 
       case "row": {
         const a = t * 0.6;
-        this.drawBarbell(cx, cy + 10 - a * 30, 0);
+        this.drawBarbell(cx, cy + 10 - a * 28, 0);
         this.drawFigure(cx, cy - 10, {
           torsoAngle: 0.5,
           leftArm: -0.8 + a, rightArm: -0.8 + a,
@@ -416,8 +572,8 @@ class ExerciseAnimator {
         const c6 = this.ctx;
         c6.strokeStyle = "#555";
         c6.lineWidth = 4;
-        c6.beginPath(); c6.moveTo(cx - 30, 0); c6.lineTo(cx - 30, cy - 60 + a * 30); c6.stroke();
-        c6.beginPath(); c6.moveTo(cx + 30, 0); c6.lineTo(cx + 30, cy - 60 + a * 30); c6.stroke();
+        c6.beginPath(); c6.moveTo(cx - 28, 0); c6.lineTo(cx - 28, cy - 58 + a * 28); c6.stroke();
+        c6.beginPath(); c6.moveTo(cx + 28, 0); c6.lineTo(cx + 28, cy - 58 + a * 28); c6.stroke();
         this.drawFigure(cx, cy, {
           torsoAngle: -0.15,
           leftArm: -2.5 + a * 0.4, rightArm: 2.5 - a * 0.4,
@@ -431,7 +587,7 @@ class ExerciseAnimator {
         const c7 = this.ctx;
         c7.strokeStyle = "#555";
         c7.lineWidth = 3;
-        c7.beginPath(); c7.moveTo(0, cy); c7.lineTo(cx - 40, cy); c7.stroke();
+        c7.beginPath(); c7.moveTo(0, cy); c7.lineTo(cx - 36, cy); c7.stroke();
         this.drawFigure(cx, cy, {
           torsoAngle: a * 0.1,
           leftArm: 0.6 - a * 0.6, rightArm: 0.6 - a * 0.6,
@@ -443,7 +599,7 @@ class ExerciseAnimator {
 
       case "deadlift": {
         const a = t * 0.7;
-        this.drawBarbell(cx, cy + 50 - a * 100);
+        this.drawBarbell(cx, cy + 48 - a * 96);
         this.drawFigure(cx, cy - 10, {
           torsoAngle: -0.6 + a * 0.6,
           leftArm: 0.7 - a * 0.7, rightArm: 0.7 - a * 0.7,
@@ -455,8 +611,8 @@ class ExerciseAnimator {
 
       case "squat": {
         const a = t * 0.85;
-        this.drawBarbell(cx, cy - 95 + a * 10);
-        this.drawFigure(cx, cy + a * 30, {
+        this.drawBarbell(cx, cy - 92 + a * 10);
+        this.drawFigure(cx, cy + a * 28, {
           torsoAngle: a * 0.35,
           leftArm: -1.2, rightArm: 1.2,
           leftFore: -0.5, rightFore: 0.5,
@@ -470,9 +626,9 @@ class ExerciseAnimator {
         const a = t * 0.7;
         const c8 = this.ctx;
         c8.fillStyle = "#1e1e1e";
-        c8.beginPath(); c8.roundRect(20, cy - 60, this.W - 40, 140, 12); c8.fill();
+        c8.beginPath(); c8.roundRect(20, cy - 58, this.W - 40, 136, 12); c8.fill();
         c8.strokeStyle = "#333"; c8.lineWidth = 2;
-        c8.strokeRect(20, cy - 60, this.W - 40, 140);
+        c8.strokeRect(20, cy - 58, this.W - 40, 136);
         this.drawFigure(cx, cy, {
           torsoAngle: -1.1,
           leftLeg: -1.2 + a * 0.7, rightLeg: -1.2 + a * 0.7,
@@ -483,7 +639,7 @@ class ExerciseAnimator {
 
       case "rdl": {
         const a = t * 0.7;
-        this.drawBarbell(cx, cy - 20 + a * 60);
+        this.drawBarbell(cx, cy - 18 + a * 58);
         this.drawFigure(cx, cy - 10, {
           torsoAngle: -a * 0.8,
           leftArm: 0.5, rightArm: 0.5,
@@ -504,9 +660,9 @@ class ExerciseAnimator {
 
       case "lunges": {
         const a = t * 0.65;
-        this.drawDumbbell(cx - 38, cy - 20, 0);
-        this.drawDumbbell(cx + 38, cy - 20, 0);
-        this.drawFigure(cx, cy - a * 20, {
+        this.drawDumbbell(cx - 36, cy - 18, 0);
+        this.drawDumbbell(cx + 36, cy - 18, 0);
+        this.drawFigure(cx, cy - a * 18, {
           torsoAngle: a * 0.1,
           leftLeg: -a * 0.5, rightLeg: a * 0.6,
           leftShin: 0.1, rightShin: -a * 0.7,
@@ -516,7 +672,7 @@ class ExerciseAnimator {
 
       case "bench": {
         const a = t * 0.6;
-        this.drawBarbell(cx, cy - 50 - a * 30);
+        this.drawBarbell(cx, cy - 48 - a * 28);
         this.drawFigure(cx, cy + 20, {
           torsoAngle: 0,
           leftArm: -1.2 + a * 0.4, rightArm: 1.2 - a * 0.4,
@@ -528,7 +684,7 @@ class ExerciseAnimator {
 
       case "incline-bench": {
         const a = t * 0.6;
-        this.drawBarbell(cx, cy - 70 - a * 25);
+        this.drawBarbell(cx, cy - 68 - a * 24);
         this.drawFigure(cx, cy + 10, {
           torsoAngle: -0.35,
           leftArm: -1.4 + a * 0.4, rightArm: 1.4 - a * 0.4,
@@ -540,8 +696,8 @@ class ExerciseAnimator {
 
       case "fly": {
         const a = t * 0.7;
-        this.drawDumbbell(cx - 30 - a * 40, cy - 40 + a * 20, a * 0.5);
-        this.drawDumbbell(cx + 30 + a * 40, cy - 40 + a * 20, -a * 0.5);
+        this.drawDumbbell(cx - 28 - a * 38, cy - 38 + a * 18, a * 0.5);
+        this.drawDumbbell(cx + 28 + a * 38, cy - 38 + a * 18, -a * 0.5);
         this.drawFigure(cx, cy + 20, {
           leftArm: -0.9 - a * 0.7, rightArm: 0.9 + a * 0.7,
           leftFore: 0.3, rightFore: -0.3,
@@ -554,8 +710,8 @@ class ExerciseAnimator {
         const a = t * 0.6;
         const c9 = this.ctx;
         c9.strokeStyle = "#444"; c9.lineWidth = 3;
-        c9.beginPath(); c9.moveTo(10, 20); c9.lineTo(cx - 40, cy - 30 - a * 20); c9.stroke();
-        c9.beginPath(); c9.moveTo(this.W - 10, 20); c9.lineTo(cx + 40, cy - 30 - a * 20); c9.stroke();
+        c9.beginPath(); c9.moveTo(10, 20); c9.lineTo(cx - 38, cy - 28 - a * 18); c9.stroke();
+        c9.beginPath(); c9.moveTo(this.W - 10, 20); c9.lineTo(cx + 38, cy - 28 - a * 18); c9.stroke();
         this.drawFigure(cx, cy, {
           torsoAngle: -0.15,
           leftArm: -0.5 - a * 0.4, rightArm: 0.5 + a * 0.4,
@@ -565,7 +721,6 @@ class ExerciseAnimator {
       }
 
       default: {
-        // Fallback — прост кърл
         const a = t * 1.5;
         this.drawFigure(cx, cy, { leftFore: -a, rightFore: a });
         break;
@@ -600,17 +755,14 @@ function renderGroup(groupKey) {
   const group = GROUPS[groupKey];
   if (!group) return;
 
-  // Обнови header
   document.getElementById("groupName").textContent  = group.name;
   document.getElementById("groupLabel").textContent = "Мускулна група";
   document.getElementById("exCount").textContent    = group.exercises.length;
   document.getElementById("musclesHit").textContent = group.muscles.length;
   document.getElementById("groupIconWrap").innerHTML = group.icon;
 
-  // Спри старите preview анимации
   Object.values(previewAnimators).forEach(a => a.stop());
 
-  // Рендер на картичките
   const grid = document.getElementById("exercisesGrid");
   grid.innerHTML = "";
 
@@ -643,17 +795,14 @@ function renderGroup(groupKey) {
 
     grid.appendChild(card);
 
-    // Стартирай preview след рендер
     requestAnimationFrame(() => {
       const canvas = document.getElementById(canvasId);
       if (canvas) startPreview(canvas, ex.animType);
     });
 
-    // Клик на картичката
     card.addEventListener("click", () => openModal(groupKey, i));
   });
 
-  // Навигация
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.group === groupKey);
   });
@@ -675,33 +824,32 @@ function openModal(groupKey, idx) {
   document.getElementById("modalRest").textContent  = ex.rest;
   document.getElementById("repNum").textContent     = "0";
 
-  // Мускули
   const mEl = document.getElementById("modalMuscles");
   mEl.innerHTML = [
     ...ex.primaryMuscles.map(m => `<span class="muscle-tag primary">${m}</span>`),
     ...ex.secondaryMuscles.map(m => `<span class="muscle-tag">${m}</span>`)
   ].join("");
 
-  // Съвети
   const tEl = document.getElementById("modalTips");
   tEl.innerHTML = `<h4>💡 Ключови точки</h4><ul>${ex.tips.map(t => `<li>${t}</li>`).join("")}</ul>`;
 
-  // Спри стара анимация
+  // Спри стара анимация — брояч -> 0
   if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
   document.getElementById("btnStart").classList.remove("hidden");
   document.getElementById("btnStop").classList.add("hidden");
   document.getElementById("repNum").textContent = "0";
 
-  // Подготви канваса
   const canvas = document.getElementById("exerciseCanvas");
   const ctx    = canvas.getContext("2d");
-  ctx.fillStyle = "#121212";
+  ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Стартирай демо при натискане
   document.getElementById("btnStart").onclick = () => {
     if (modalAnimator) modalAnimator.stop();
     modalAnimator = new ExerciseAnimator(canvas, ex.animType);
+    // Брояч стартира от 0 при всяко натискане
+    modalAnimator.reps = 0;
+    document.getElementById("repNum").textContent = "0";
     modalAnimator.onRep = (n) => {
       document.getElementById("repNum").textContent = n;
     };
@@ -735,16 +883,13 @@ function closeModal() {
    ===================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Навигация
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       renderGroup(btn.dataset.group);
-      // Затвори мобилно меню
       document.getElementById("mainNav").classList.remove("open");
     });
   });
 
-  // Затвори модал
   document.getElementById("modalClose").addEventListener("click", closeModal);
   document.getElementById("modalOverlay").addEventListener("click", (e) => {
     if (e.target === document.getElementById("modalOverlay")) closeModal();
@@ -753,11 +898,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeModal();
   });
 
-  // Хамбургер
   document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("mainNav").classList.toggle("open");
   });
 
-  // Рендер на началната група
   renderGroup("biceps");
 });
