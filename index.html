@@ -11,6 +11,9 @@
 </head>
 <body>
 
+
+
+
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
@@ -25,12 +28,12 @@
         <span>IronForm</span>
       </div>
       <nav class="nav" id="mainNav">
-        <button class="nav-btn active" data-group="biceps">Бицепс</button>
-        <button class="nav-btn" data-group="triceps">Трицепс</button>
-        <button class="nav-btn" data-group="shoulders">Рамо</button>
-        <button class="nav-btn" data-group="back">Гръб</button>
-        <button class="nav-btn" data-group="legs">Крака</button>
-        <button class="nav-btn" data-group="chest">Гърди</button>
+        <button class="nav-btn active" data-group="biceps"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt="Бицепс"></button>
+        <button class="nav-btn" data-group="triceps"><img class="tab-icon" src="muscle-icons/triceps_b.svg" alt="Трицепс"></button>
+        <button class="nav-btn" data-group="shoulders"><img class="tab-icon" src="muscle-icons/shoulders_b.svg" alt="Рамо"></button>
+        <button class="nav-btn" data-group="back"><img class="tab-icon" src="muscle-icons/back_b.svg" alt="Гръб"></button>
+        <button class="nav-btn" data-group="legs"><img class="tab-icon" src="muscle-icons/quadriceps_b.svg" alt="Крака"></button>
+        <button class="nav-btn" data-group="chest"><img class="tab-icon" src="muscle-icons/chest_b.svg" alt="Гърди"></button>
       </nav>
       <button class="hamburger" id="hamburger" aria-label="Меню">
         <span></span><span></span><span></span>
@@ -115,7 +118,7 @@
       </div>
       <div>
         <p class="group-label" id="groupLabel">Мускулна група</p>
-        <h2 class="group-name" id="groupName">Бицепс</h2>
+        <h2 class="group-name" id="groupName"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt="Бицепс"></h2>
       </div>
       <div class="group-stats">
         <span class="gstat"><strong id="exCount">5</strong> упражнения</span>
@@ -135,14 +138,15 @@
       <button class="modal-close" id="modalClose">✕</button>
       <div class="modal-inner">
         <div class="modal-animation-wrap">
-          <canvas class="exercise-canvas" id="exerciseCanvas" width="320" height="280"></canvas>
+          <div id="leftVideoContainer" class="left-video-container"></div>
           <div class="rep-counter">
             <span id="repNum">0</span>
             <small>повторения</small>
           </div>
         </div>
         <div class="modal-info">
-          <span class="modal-tag" id="modalTag">Бицепс</span>
+          <div id="modalMedia" class="modal-media"></div>
+          <span class="modal-tag" id="modalTag"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt="Бицепс"></span>
           <h3 class="modal-title" id="modalTitle">Упражнение</h3>
           <div class="modal-desc" id="modalDesc"></div>
           <div class="modal-muscles" id="modalMuscles"></div>
@@ -161,7 +165,7 @@
               <strong id="modalRest">60 сек</strong>
             </div>
           </div>
-          <button class="btn-start" id="btnStart">▶ Стартирай демо</button>
+          <button class="btn-start" id="btnStart">▶ Стартирай</button>
           <button class="btn-stop hidden" id="btnStop">◼ Спри</button>
         </div>
       </div>

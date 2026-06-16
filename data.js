@@ -8,6 +8,8 @@ const GROUPS = {
     exercises: [
       {
         id: "barbell-curl",
+        image: "images/Barbell Curl.jpg",
+        video: "video/Barbell Curl.mp4",
         name: "Барбел Кърл",
         difficulty: "Средно",
         sets: "3–4",
@@ -26,6 +28,8 @@ const GROUPS = {
       },
       {
         id: "hammer-curl",
+        image: "images/Hammer Curl.jpg",
+        video: "video/Hammer Curl.mp4",
         name: "Хамър Кърл",
         difficulty: "Начинаещ",
         sets: "3",
@@ -44,6 +48,8 @@ const GROUPS = {
       },
       {
         id: "incline-curl",
+        image: "images/Incline Bench Curl.jpg",
+        video: "video/Incline Bench Curl.mp4",
         name: "Кърл на Наклонена Пейка",
         difficulty: "Средно",
         sets: "3",
@@ -62,6 +68,8 @@ const GROUPS = {
       },
       {
         id: "concentration-curl",
+        image: "images/Concentration Curl.jpg",
+        video: "video/Concentration Curl.mp4",
         name: "Концентрационен Кърл",
         difficulty: "Начинаещ",
         sets: "3",
@@ -80,6 +88,8 @@ const GROUPS = {
       },
       {
         id: "cable-curl",
+        image: "images/Cable Curl.jpg",
+        video: "video/Cable Curl.mp4",
         name: "Кейбъл Кърл",
         difficulty: "Начинаещ",
         sets: "3",

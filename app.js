@@ -773,7 +773,7 @@ function renderGroup(groupKey) {
     card.className = "ex-card";
     card.innerHTML = `
       <div class="ex-card-preview">
-        <canvas id="${canvasId}" width="260" height="180"></canvas>
+        ${ex.video ? `<video class="card-video" muted preload="metadata"><source src="${ex.video}" type="video/mp4"></video>` : `<canvas id="${canvasId}" width="260" height="180"></canvas>`}
         <span class="ex-card-badge">${ex.difficulty}</span>
       </div>
       <div class="ex-card-body">
@@ -824,6 +824,18 @@ function openModal(groupKey, idx) {
   document.getElementById("modalRest").textContent  = ex.rest;
   document.getElementById("repNum").textContent     = "0";
 
+  const mediaEl = document.getElementById("modalMedia");
+  mediaEl.innerHTML = "";
+
+  const leftVideo = document.getElementById("leftVideoContainer");
+  leftVideo.innerHTML = "";
+  if (ex.video) {
+    leftVideo.innerHTML = `<video controls autoplay preload="metadata" style="width:100%;border-radius:12px;"><source src="${ex.video}" type="video/mp4"></video>`;
+  } else if (ex.image) {
+    leftVideo.innerHTML = `<img src="${ex.image}" alt="${ex.name}" style="width:100%;border-radius:12px;">`;
+  }
+
+
   const mEl = document.getElementById("modalMuscles");
   mEl.innerHTML = [
     ...ex.primaryMuscles.map(m => `<span class="muscle-tag primary">${m}</span>`),
@@ -840,11 +852,24 @@ function openModal(groupKey, idx) {
   document.getElementById("repNum").textContent = "0";
 
   const canvas = document.getElementById("exerciseCanvas");
-  const ctx    = canvas.getContext("2d");
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if(canvas){
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle="#111";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
 
   document.getElementById("btnStart").onclick = () => {
+    if (!canvas) {
+      let reps = 0;
+      clearInterval(window.repTimer);
+      window.repTimer = setInterval(() => {
+        reps++;
+        document.getElementById("repNum").textContent = reps;
+      }, 1500);
+      document.getElementById("btnStart").classList.add("hidden");
+      document.getElementById("btnStop").classList.remove("hidden");
+      return;
+    }
     if (modalAnimator) modalAnimator.stop();
     modalAnimator = new ExerciseAnimator(canvas, ex.animType);
     // Брояч стартира от 0 при всяко натискане
@@ -859,6 +884,7 @@ function openModal(groupKey, idx) {
   };
 
   document.getElementById("btnStop").onclick = () => {
+    clearInterval(window.repTimer);
     if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
     document.getElementById("repNum").textContent = "0";
     document.getElementById("btnStart").classList.remove("hidden");
