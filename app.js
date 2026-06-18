@@ -751,6 +751,12 @@ let currentGroup = "biceps";
 let currentGender = "female"; // "male" | "female"
 let modalAnimator = null;
 
+function resetRepCounter() {
+  clearInterval(window.repTimer);
+  window.repTimer = null;
+  document.getElementById("repNum").textContent = "0";
+}
+
 // Връща активния набор групи: от JSON-а спрямо избрания пол,
 // а ако JSON-ът още не е зареден — резервно от data.js (GROUPS)
 function activeGroups() {
@@ -832,7 +838,7 @@ function openModal(groupKey, idx) {
   document.getElementById("modalSets").textContent  = ex.sets;
   document.getElementById("modalReps").textContent  = ex.reps;
   document.getElementById("modalRest").textContent  = ex.rest;
-  document.getElementById("repNum").textContent     = "0";
+  resetRepCounter();
 
   const mediaEl = document.getElementById("modalMedia");
   mediaEl.innerHTML = "";
@@ -859,7 +865,7 @@ function openModal(groupKey, idx) {
   if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
   document.getElementById("btnStart").classList.remove("hidden");
   document.getElementById("btnStop").classList.add("hidden");
-  document.getElementById("repNum").textContent = "0";
+  resetRepCounter();
 
   const canvas = document.getElementById("exerciseCanvas");
   if(canvas){
@@ -869,9 +875,9 @@ function openModal(groupKey, idx) {
   }
 
   document.getElementById("btnStart").onclick = () => {
+    resetRepCounter();
     if (!canvas) {
       let reps = 0;
-      clearInterval(window.repTimer);
       window.repTimer = setInterval(() => {
         reps++;
         document.getElementById("repNum").textContent = reps;
@@ -884,7 +890,6 @@ function openModal(groupKey, idx) {
     modalAnimator = new ExerciseAnimator(canvas, ex.animType);
     // Брояч стартира от 0 при всяко натискане
     modalAnimator.reps = 0;
-    document.getElementById("repNum").textContent = "0";
     modalAnimator.onRep = (n) => {
       document.getElementById("repNum").textContent = n;
     };
@@ -894,9 +899,8 @@ function openModal(groupKey, idx) {
   };
 
   document.getElementById("btnStop").onclick = () => {
-    clearInterval(window.repTimer);
+    resetRepCounter();
     if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
-    document.getElementById("repNum").textContent = "0";
     document.getElementById("btnStart").classList.remove("hidden");
     document.getElementById("btnStop").classList.add("hidden");
   };
@@ -906,12 +910,12 @@ function openModal(groupKey, idx) {
 }
 
 function closeModal() {
+  resetRepCounter();
   if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
   document.getElementById("modalOverlay").classList.remove("open");
   document.body.style.overflow = "";
   document.getElementById("btnStart").classList.remove("hidden");
   document.getElementById("btnStop").classList.add("hidden");
-  document.getElementById("repNum").textContent = "0";
 }
 
 /* =====================================================
