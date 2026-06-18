@@ -1,6 +1,7 @@
 (() => {
   const LYFTA_BASE_URL = "https://my.lyfta.app";
   const LYFTA_PROXY_URL = "http://127.0.0.1:8767/api/lyfta-exercises";
+  const LYFTA_CACHE_URL = "lyfta_exercises_cache.json";
   const MAX_API_PAGES = 18;
   const PAGE_SIZE = 100;
 
@@ -359,6 +360,9 @@
   }
 
   async function fetchLyftaExercises() {
+    const cached = await fetchLyftaCache();
+    if (cached.length >= 20) return cached.map(normalizeLyftaExercise);
+
     const collected = [];
     for (let page = 1; page <= MAX_API_PAGES; page += 1) {
       const url = `${LYFTA_PROXY_URL}?limit=${PAGE_SIZE}&page=${page}`;
@@ -373,6 +377,18 @@
       if (rows.length < PAGE_SIZE) break;
     }
     return collected.map(normalizeLyftaExercise);
+  }
+
+  async function fetchLyftaCache() {
+    try {
+      const response = await fetch(`${LYFTA_CACHE_URL}?v=20260618`, { headers: { Accept: "application/json" } });
+      if (!response.ok) return [];
+      const payload = await response.json();
+      const rows = Array.isArray(payload) ? payload : getFirst(payload.exercises, payload.data, payload.results, payload.items, []);
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
   }
 
   function decodeText(value) {
@@ -504,11 +520,11 @@
       if (!state.apiExercises.length) state.apiExercises = await fetchLyftaExercises();
       state.plan = buildWorkoutPlan(filterExercises(state.apiExercises));
       if (!state.plan.length) {
-        state.error = `No Lyfta exercises found for ${equipmentLabels[state.equipment]} and the selected muscle groups. Choose another equipment type or muscle group.`;
+        state.error = `Няма намерени упражнения за ${equipmentLabels[state.equipment]} и избраните мускулни групи. Избери друго оборудване или друга мускулна група.`;
       }
     } catch (error) {
-      state.source = "Local fallback";
-      state.error = "Lyfta did not return a usable exact-equipment plan right now. Showing only local exercises that match your selected equipment.";
+      state.source = "Локален резерв";
+      state.error = "Няма зареден Lyfta cache файл или локален API. За GitHub Pages трябва да има lyfta_exercises_cache.json в папката на сайта.";
       state.plan = buildWorkoutPlan(filterExercises(localExercises()));
       console.warn("Lyfta load failed:", error);
     } finally {
@@ -527,9 +543,9 @@
           <div class="brand-mark">IF</div>
           <div>
             <strong>IronForm</strong>
-            <span>${state.loading ? "Loading Lyfta..." : state.plan.length ? `${state.plan.length} exercises · ${state.source}` : "Personal setup"}</span>
+            <span>${state.loading ? "Зареждам Lyfta..." : state.plan.length ? `${state.plan.length} упражнения · ${state.source}` : "Персонална настройка"}</span>
           </div>
-          ${state.step > 1 && !state.loading ? `<button class="ghost-btn" data-action="back">Back</button>` : ""}
+          ${state.step > 1 && !state.loading ? `<button class="ghost-btn" data-action="back">Назад</button>` : ""}
         </header>
         <main id="coachRoot"></main>
       </div>
@@ -547,8 +563,8 @@
       <section class="onboard loading-screen">
         <div class="progress indeterminate"><span></span></div>
         <p class="eyebrow">Lyfta API</p>
-        <h1>Loading exercises</h1>
-        <p class="lead">Fetching illustrated exercises from Lyfta and building your workout plan.</p>
+        <h1>Зареждам упражнения</h1>
+        <p class="lead">Взимам илюстрираните упражнения и подреждам тренировъчен план.</p>
       </section>
     `;
   }
@@ -556,25 +572,25 @@
   function renderOnboarding() {
     const root = document.getElementById("coachRoot");
     const titles = {
-      1: ["Who is training?", "Choose a profile so the workout can be arranged better."],
-      2: ["What equipment do you have?", "Lyfta will be filtered to this exact equipment type."],
-      3: ["Which muscle groups?", "Choose one or more muscle groups for today's workout."]
+      1: ["Кой ще тренира?", "Избери профил, за да подредим тренировката по-добре."],
+      2: ["Какво оборудване имаш?", "Упражненията ще се филтрират точно по този тип оборудване."],
+      3: ["Кои мускулни групи?", "Избери една или повече мускулни групи за днешната тренировка."]
     };
     const progress = Math.round((state.step / 3) * 100);
     root.innerHTML = `
       <section class="onboard">
         <div class="progress"><span style="width:${progress}%"></span></div>
-        <p class="eyebrow">Step ${state.step} of 3</p>
+        <p class="eyebrow">Стъпка ${state.step} от 3</p>
         <h1>${titles[state.step][0]}</h1>
         <p class="lead">${titles[state.step][1]}</p>
         <div class="choice-grid ${state.step === 2 ? "equipment-choices" : ""}" id="choiceGrid"></div>
-        <button class="primary-btn" id="continueBtn" ${canContinue() ? "" : "disabled"}>${state.step === 3 ? "Build workout plan" : "Continue"}</button>
+        <button class="primary-btn" id="continueBtn" ${canContinue() ? "" : "disabled"}>${state.step === 3 ? "Направи тренировъчен план" : "Продължи"}</button>
       </section>
     `;
 
     const grid = document.getElementById("choiceGrid");
     if (state.step === 1) {
-      grid.innerHTML = choice("gender", "male", "Male", "Strength-focused setup") + choice("gender", "female", "Female", "Balanced setup");
+      grid.innerHTML = choice("gender", "male", "Мъж", "По-силов фокус") + choice("gender", "female", "Жена", "Балансиран фокус");
     }
     if (state.step === 2) {
       grid.innerHTML = equipmentChoices.map(([value, title, text]) => choice("equipment", value, title, text)).join("");
@@ -639,22 +655,22 @@
     root.innerHTML = `
       <section class="plan-head">
         <div>
-          <p class="eyebrow">${esc(equipmentLabels[state.equipment])} · ${state.gender === "male" ? "Male" : "Female"} · ${esc(state.source)}</p>
+          <p class="eyebrow">${esc(equipmentLabels[state.equipment])} · ${state.gender === "male" ? "Мъж" : "Жена"} · ${esc(state.source)}</p>
           <h1>${esc(groups)}</h1>
-          <p class="lead">${state.plan.length} exercises arranged into a workout plan.</p>
+          <p class="lead">${state.plan.length} упражнения са подредени в тренировъчен план.</p>
         </div>
-        <button class="ghost-btn" id="restartBtn">New setup</button>
+        <button class="ghost-btn" id="restartBtn">Нов избор</button>
       </section>
       ${state.error ? `<div class="status-note">${esc(state.error)}</div>` : ""}
       <section class="program-panel">
         <div class="program-actions">
-          <button class="primary-btn" id="startProgramBtn" ${state.plan.length ? "" : "disabled"}>Start workout</button>
+          <button class="primary-btn" id="startProgramBtn" ${state.plan.length ? "" : "disabled"}>Започни тренировка</button>
         </div>
         <div class="program-list">
           ${preview.map((ex, index) => programRow(ex, index)).join("")}
         </div>
       </section>
-      ${!state.plan.length ? `<div class="empty-state">No exercises for this exact setup. Go back and choose another equipment or muscle group.</div>` : ""}
+      ${!state.plan.length ? `<div class="empty-state">Няма упражнения за тази точна комбинация. Върни се назад и избери друго оборудване или друга мускулна група.</div>` : ""}
     `;
     document.getElementById("restartBtn").addEventListener("click", () => {
       Object.assign(state, { step: 1, gender: "", equipment: "", groups: [], plan: [], activeIndex: 0, error: "" });
@@ -712,8 +728,8 @@
     root.innerHTML = `
       <section class="workout-progress">
         <div>
-          <strong>Exercise ${state.activeIndex + 1} of ${state.plan.length}</strong>
-          <span>${state.plan.length - state.activeIndex - 1} remaining</span>
+          <strong>Упражнение ${state.activeIndex + 1} от ${state.plan.length}</strong>
+          <span>остават ${state.plan.length - state.activeIndex - 1}</span>
         </div>
         <div class="workout-bar"><span style="width:${progressPercent}%"></span></div>
       </section>
@@ -730,11 +746,11 @@
           <div class="details-block">
             <h1>${esc(ex.name)}</h1>
             <dl>
-              <div><dt>Sets</dt><dd>${esc(ex.sets)}</dd></div>
-              <div><dt>Reps</dt><dd>${esc(ex.reps)}</dd></div>
-              <div><dt>Rest</dt><dd>${esc(ex.rest)}</dd></div>
-              <div><dt>Equipment</dt><dd>${esc(ex.equipmentName || equipmentLabels[ex.equipment])}</dd></div>
-              <div><dt>Muscles</dt><dd>${esc(ex.primaryMuscles.slice(0, 3).join(", "))}</dd></div>
+              <div><dt>Серии</dt><dd>${esc(ex.sets)}</dd></div>
+              <div><dt>Повторения</dt><dd>${esc(ex.reps)}</dd></div>
+              <div><dt>Почивка</dt><dd>${esc(ex.rest)}</dd></div>
+              <div><dt>Оборудване</dt><dd>${esc(ex.equipmentName || equipmentLabels[ex.equipment])}</dd></div>
+              <div><dt>Мускули</dt><dd>${esc(ex.primaryMuscles.slice(0, 3).join(", "))}</dd></div>
             </dl>
           </div>
         </div>
@@ -742,8 +758,8 @@
           <p>${esc(ex.desc)}</p>
           <div class="timer-face" id="timerFace">${formatTime(state.remaining || ex.duration)}</div>
           <div class="exercise-actions">
-            <button class="primary-btn" id="startBtn">${state.running ? "Pause" : "Start"}</button>
-            <button class="ghost-btn" id="nextExerciseBtn">${state.activeIndex + 1 >= state.plan.length ? "Finish" : "Next exercise"}</button>
+            <button class="primary-btn" id="startBtn">${state.running ? "Пауза" : "Старт"}</button>
+            <button class="ghost-btn" id="nextExerciseBtn">${state.activeIndex + 1 >= state.plan.length ? "Край" : "Следващо упражнение"}</button>
           </div>
         </div>
       </section>
@@ -798,12 +814,12 @@
     const root = document.getElementById("coachRoot");
     root.innerHTML = `
       <section class="complete-screen">
-        <p class="eyebrow">Workout complete</p>
-        <h1>Great work</h1>
-        <p class="lead">You finished ${state.plan.length} exercises for ${state.groups.map(key => groupLabels[key]).join(", ")}.</p>
+        <p class="eyebrow">Тренировката е завършена</p>
+        <h1>Браво</h1>
+        <p class="lead">Завърши ${state.plan.length} упражнения за ${state.groups.map(key => groupLabels[key]).join(", ")}.</p>
         <div class="complete-actions">
-          <button class="primary-btn" id="repeatWorkoutBtn">Repeat workout</button>
-          <button class="ghost-btn" id="newWorkoutBtn">New plan</button>
+          <button class="primary-btn" id="repeatWorkoutBtn">Повтори тренировката</button>
+          <button class="ghost-btn" id="newWorkoutBtn">Нов план</button>
         </div>
       </section>
     `;

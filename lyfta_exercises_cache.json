@@ -1,0 +1,7 @@
+{
+  "status": false,
+  "count": 0,
+  "generated_at": null,
+  "note": "Run DOWNLOAD_LYFTA_CACHE.ps1 after the Lyfta API rate limit resets. This file will be overwritten with all exercises.",
+  "exercises": []
+}

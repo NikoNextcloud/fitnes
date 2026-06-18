@@ -3,8 +3,9 @@ from urllib.parse import parse_qs, urlencode, urlparse
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 import json
+import os
 
-API_KEY = "14075abf38be0d21416d75c3d32a083206b04b3caa5224e3a8794a8c26719255"
+API_KEY = os.environ.get("LYFTA_API_KEY", "")
 LYFTA_URL = "https://my.lyfta.app/api/v1/exercises"
 
 
@@ -27,6 +28,15 @@ class LyftaProxyHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def proxy_lyfta(self, query):
+        if not API_KEY:
+            body = json.dumps({"status": False, "error": "Set LYFTA_API_KEY before starting this local proxy."}).encode("utf-8")
+            self.send_response(500)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
         params = parse_qs(query)
         limit = params.get("limit", ["100"])[0]
         page = params.get("page", ["1"])[0]
