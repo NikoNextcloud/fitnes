@@ -748,11 +748,21 @@ function startPreview(canvas, animType) {
    ===================================================== */
 
 let currentGroup = "biceps";
+let currentGender = "female"; // "male" | "female"
 let modalAnimator = null;
+
+// Връща активния набор групи: от JSON-а спрямо избрания пол,
+// а ако JSON-ът още не е зареден — резервно от data.js (GROUPS)
+function activeGroups() {
+  if (window.LYFTA_DB && window.LYFTA_DB[currentGender]) {
+    return window.LYFTA_DB[currentGender];
+  }
+  return (typeof GROUPS === "object") ? GROUPS : {};
+}
 
 function renderGroup(groupKey) {
   currentGroup = groupKey;
-  const group = GROUPS[groupKey];
+  const group = activeGroups()[groupKey];
   if (!group) return;
 
   document.getElementById("groupName").textContent  = group.name;
@@ -813,8 +823,8 @@ function renderGroup(groupKey) {
    ===================================================== */
 
 function openModal(groupKey, idx) {
-  const ex    = GROUPS[groupKey].exercises[idx];
-  const group = GROUPS[groupKey];
+  const ex    = activeGroups()[groupKey].exercises[idx];
+  const group = activeGroups()[groupKey];
 
   document.getElementById("modalTag").textContent   = group.name;
   document.getElementById("modalTitle").textContent = ex.name;
@@ -916,6 +926,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Превключвател Мъж / Жена
+  document.querySelectorAll(".gender-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentGender = btn.dataset.gender;
+      document.querySelectorAll(".gender-btn").forEach(b =>
+        b.classList.toggle("active", b.dataset.gender === currentGender)
+      );
+      renderGroup(currentGroup); // презарежда упражненията за новия пол
+    });
+  });
+
   document.getElementById("modalClose").addEventListener("click", closeModal);
   document.getElementById("modalOverlay").addEventListener("click", (e) => {
     if (e.target === document.getElementById("modalOverlay")) closeModal();
@@ -928,5 +949,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mainNav").classList.toggle("open");
   });
 
-  renderGroup("biceps");
+  // Зареждаме упражненията от JSON-а, после рендираме
+  const grid = document.getElementById("exercisesGrid");
+  if (grid) grid.innerHTML = `<p style="padding:2rem;opacity:.7">Зареждам упражненията…</p>`;
+
+  loadLyftaExercises()
+    .then(() => {
+      renderGroup(currentGroup);
+    })
+    .catch(err => {
+      console.error(err);
+      // Резервен вариант: показваме локалния набор от data.js
+      if (grid) grid.innerHTML =
+        `<p style="padding:2rem;color:#ff6">Не успях да заредя JSON кеша (${err.message}). ` +
+        `Стартирай проекта през локален сървър. Показвам резервните упражнения.</p>`;
+      renderGroup(currentGroup);
+    });
 });

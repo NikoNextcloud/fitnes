@@ -335,7 +335,7 @@
       equipment: category,
       equipmentName: equipmentText(raw),
       image: lyftaImage(raw),
-      video: absolutizeUrl(firstImageUrl([raw.video, raw.video_url, raw.videoUrl, raw.animation, raw.gif])),
+      video: absolutizeUrl(firstImageUrl([raw.video_file, raw.video, raw.video_name, raw.video_url, raw.videoUrl, raw.animation, raw.gif])),
       duration: inferDuration(getFirst(raw.reps, raw.default_reps, defaultReps(category)))
     };
   }
