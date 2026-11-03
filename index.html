@@ -3,143 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#11130f">
-  <meta name="description" content="IronForm — практичен наръчник с видео демонстрации, инструкции и персонален план за тренировка.">
-  <title>IronForm — Тренирай с правилна техника</title>
+  <meta name="theme-color" content="#f5f6f2">
+  <meta name="description" content="Създай план, води тренировките си и следи прогреса си с IronForm.">
+  <title>IronForm — Тренировъчен план и прогрес</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#catalog">Към упражненията</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="index.html" aria-label="IronForm — начало">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M4 15h5v6H4zm23 0h5v6h-5zM10 11h4v14h-4zm12 0h4v14h-4zM14 16h8v4h-8z"/></svg></span>
-        <span class="brand-copy"><strong>IRON<span>FORM</span></strong><small>ТРЕНИРАЙ С ТЕХНИКА</small></span>
-      </a>
-      <button class="hamburger" id="hamburger" type="button" aria-label="Отвори менюто" aria-controls="mainNav" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="nav" id="mainNav" aria-label="Мускулни групи">
-        <button class="nav-btn active" type="button" role="tab" aria-selected="true" data-group="biceps"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt=""><span>Бицепс</span></button>
-        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="triceps"><img class="tab-icon" src="muscle-icons/triceps_b.svg" alt=""><span>Трицепс</span></button>
-        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="shoulders"><img class="tab-icon" src="muscle-icons/shoulders_b.svg" alt=""><span>Рамене</span></button>
-        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="back"><img class="tab-icon" src="muscle-icons/back_b.svg" alt=""><span>Гръб</span></button>
-        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="legs"><img class="tab-icon" src="muscle-icons/quadriceps_b.svg" alt=""><span>Крака</span></button>
-        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="chest"><img class="tab-icon" src="muscle-icons/chest_b.svg" alt=""><span>Гърди</span></button>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Основна навигация">
+      <a class="brand" href="#home" aria-label="IronForm начало"><span class="brand-mark">I</span><span class="brand-word">ironform<small>TRAINING STUDIO</small></span></a>
+      <div class="side-label">РАБОТНО ПРОСТРАНСТВО</div>
+      <nav class="side-nav">
+        <button class="side-link active" data-view="home"><span class="side-icon">⌂</span>Общ преглед</button>
+        <button class="side-link" data-view="plan"><span class="side-icon">▦</span>Моят план</button>
+        <button class="side-link" data-view="library"><span class="side-icon">◈</span>Упражнения</button>
+        <button class="side-link" data-view="progress"><span class="side-icon">↗</span>Прогрес</button>
       </nav>
-      <div class="header-actions">
-        <a class="coach-link" href="coach.html"><span aria-hidden="true">✦</span> Създай план</a>
-        <div class="gender-switch" id="genderSwitch" role="group" aria-label="Филтър за упражнения">
-          <button class="gender-btn" type="button" data-gender="male" aria-pressed="false">Мъж</button>
-          <button class="gender-btn active" type="button" data-gender="female" aria-pressed="true">Жена</button>
-        </div>
-      </div>
-    </div>
-  </header>
+      <div class="sidebar-spacer"></div>
+      <div class="coach-card"><div class="coach-symbol">✳</div><strong>Тренируй с план</strong><p>Напасни програмата към целта и графика си.</p><button class="text-button" data-view="plan">Настрой плана <span>→</span></button></div>
+      <div class="profile-mini"><div class="avatar">И</div><div><strong>Моят профил</strong><small>Лични тренировки</small></div><button class="icon-button" id="settingsShortcut" aria-label="Настройки на плана">⚙</button></div>
+    </aside>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="eyebrow-dot"></span> ТВОЯТ ФИТНЕС НАРЪЧНИК</p>
-        <h1>Силата започва<br>с <span>правилната техника.</span></h1>
-        <p class="hero-description">Избери мускулна група, разгледай движенията и тренирай уверено с ясни демонстрации и насоки.</p>
-        <div class="hero-actions">
-          <a class="hero-cta" href="#catalog">Разгледай упражненията <span aria-hidden="true">↓</span></a>
-          <a class="hero-secondary" href="coach.html"><span class="sparkle" aria-hidden="true">✦</span> Направи ми план</a>
-        </div>
-        <div class="hero-proof"><span class="proof-icon" aria-hidden="true">✓</span><span>Практични инструкции · Видео демонстрации · Запазени любими</span></div>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
-        <div class="art-glow"></div>
-        <div class="art-card art-card-top"><span class="art-card-icon">↗</span><span><strong>Контролирай</strong><small>всяко повторение</small></span></div>
-        <div class="art-athlete">
-          <div class="athlete-head"></div><div class="athlete-neck"></div><div class="athlete-torso"></div>
-          <div class="athlete-arm arm-left"></div><div class="athlete-arm arm-right"></div>
-          <div class="athlete-leg leg-left"></div><div class="athlete-leg leg-right"></div>
-          <div class="athlete-weight"><i></i><b></b><i></i></div>
-        </div>
-        <div class="art-card art-card-bottom"><span class="art-check">✓</span><span><strong>Форма преди тежест</strong><small>Тренирай разумно</small></span></div>
-        <div class="art-caption">ДВИЖЕНИЕ С ЦЕЛ</div>
-      </div>
-      <div class="hero-bottom-line"><span>01 / 06</span><span class="hero-line"></span><span>ИЗБЕРИ СВОЯТА ГРУПА</span></div>
-    </section>
+    <main class="main-area">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">I</span><strong>ironform</strong></div><div class="crumb" id="pageCrumb">Тренировъчно студио <span>/</span> Общ преглед</div><div class="top-actions"><span class="today-label" id="todayLabel"></span><button class="top-avatar" aria-label="Профил">И</button></div></header>
+      <div class="content-wrap">
+        <section class="view active" id="view-home" aria-labelledby="homeTitle">
+          <div class="welcome-row"><div><p class="eyebrow">ВТОРНИК · ТРЕНИРОВЪЧНО СТУДИО</p><h1 id="homeTitle">Здравей, <span>спортист.</span></h1><p class="lead">Малки стъпки. Последователност. Истински напредък.</p></div><button class="button button-quiet" data-view="plan">⚙ <span>Настройки на плана</span></button></div>
+          <div class="hero-panel"><div class="hero-copy"><div class="hero-chip"><i></i><span id="nextWorkoutBadge">ПЛАНЪТ ТЕ ЧАКА</span></div><h2 id="nextWorkoutTitle">Изгради своя<br><em>ритъм.</em></h2><p id="nextWorkoutCopy">Създай план според целта, опита и времето, с което разполагаш.</p><div class="hero-buttons"><button class="button button-primary" id="heroAction">Създай тренировъчен план <span>→</span></button><button class="button button-outline" data-view="library">Разгледай упражненията</button></div></div><div class="hero-visual" aria-hidden="true"><div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div><div class="visual-orbit"></div><div class="visual-disc"><span>IF</span></div><div class="visual-stats"><small>ДНЕС Е ДОБЪР ДЕН</small><strong>за движение <span>↗</span></strong></div></div><div class="hero-index">01 <span>/</span> 04</div></div>
+          <div class="section-heading"><div><p class="eyebrow">ПОГЛЕД ОТБЛИЗО</p><h2>Твоят напредък</h2></div><button class="link-button" data-view="progress">Виж статистиката <span>→</span></button></div>
+          <div class="metrics-grid"><article class="metric-card"><div class="metric-top"><span>Тренировки тази седмица</span><span class="metric-icon">▦</span></div><strong id="metricSessions">0 <small>/ 0</small></strong><div class="metric-foot"><span class="metric-bar"><i id="weeklyBar"></i></span><small id="weeklyCaption">Създай план, за да започнеш</small></div></article><article class="metric-card"><div class="metric-top"><span>Общо тренировки</span><span class="metric-icon">✳</span></div><strong id="metricTotal">0</strong><div class="metric-foot"><span class="metric-note">Записаните тренировки се пазят на това устройство.</span></div></article><article class="metric-card"><div class="metric-top"><span>Серия от седмици</span><span class="metric-icon">↗</span></div><strong id="metricStreak">0 <small>седмици</small></strong><div class="metric-foot"><span class="metric-note">Последователността е най-добрата стратегия.</span></div></article></div>
+          <div class="bottom-grid"><section class="panel week-panel"><div class="panel-head"><div><p class="eyebrow">ТВОЯТ ГРАФИК</p><h3>Тази седмица</h3></div><button class="link-button" data-view="plan">Цял план →</button></div><div class="week-strip" id="weekStrip"></div><div class="up-next" id="upNext"></div></section><section class="panel principle-panel"><p class="eyebrow">ПРИНЦИП НА СЕДМИЦАТА</p><div class="principle-mark">“</div><h3>Техниката е<br>твоята основа.</h3><p>Започни с тежест, която контролираш във всяко повторение. Добавяй натоварване постепенно, когато формата ти остане стабилна.</p><div class="principle-footer"><span>IRONFORM NOTES</span><span>01 — 04</span></div></section></div>
+        </section>
 
-    <section class="catalog-section" id="catalog" aria-labelledby="groupName">
-      <div class="catalog-intro">
-        <div>
-          <p class="eyebrow">БИБЛИОТЕКА С УПРАЖНЕНИЯ</p>
-          <h2>Намери следващото си <span>движение.</span></h2>
-        </div>
-        <p class="catalog-note">Избери упражнение, за да видиш демонстрацията, сериите и насоките за изпълнение.</p>
+        <section class="view" id="view-plan" aria-labelledby="planTitle"><div class="page-heading"><div><p class="eyebrow">ПЕРСОНАЛНА ПРОГРАМА</p><h1 id="planTitle">Моят <span>план.</span></h1><p class="lead">Структуриран график, съобразен с твоите цели и възможности.</p></div><button class="button button-primary" id="editPlanButton">⚙ Настрой плана</button></div><div id="planContent"></div></section>
+
+        <section class="view" id="view-library" aria-labelledby="libraryTitle"><div class="page-heading"><div><p class="eyebrow">БИБЛИОТЕКА С ДВИЖЕНИЯ</p><h1 id="libraryTitle">Упражнения.</h1><p class="lead">Практични насоки за по-уверено изпълнение.</p></div></div><div class="library-tools"><label class="search-box"><span>⌕</span><input id="exerciseSearch" type="search" placeholder="Търси упражнение или мускулна група…"></label><div class="filter-pills" id="groupFilters"></div></div><div class="exercise-list" id="exerciseList"></div></section>
+
+        <section class="view" id="view-progress" aria-labelledby="progressTitle"><div class="page-heading"><div><p class="eyebrow">ПОСЛЕДОВАТЕЛНОСТ В ДЕЙСТВИЕ</p><h1 id="progressTitle">Твоят <span>прогрес.</span></h1><p class="lead">Записвай тренировките си и изграждай устойчив ритъм.</p></div></div><div class="metrics-grid progress-metrics"><article class="metric-card"><div class="metric-top"><span>Тренировки общо</span><span class="metric-icon">▦</span></div><strong id="progressTotal">0</strong><div class="metric-foot"><span class="metric-note">Всички завършени сесии</span></div></article><article class="metric-card"><div class="metric-top"><span>Този месец</span><span class="metric-icon">✳</span></div><strong id="progressMonth">0</strong><div class="metric-foot"><span class="metric-note">Всяка сесия е крачка напред.</span></div></article><article class="metric-card"><div class="metric-top"><span>Общ обем</span><span class="metric-icon">↗</span></div><strong id="progressVolume">0 <small>кг</small></strong><div class="metric-foot"><span class="metric-note">Сбор от записаните серии и тежести.</span></div></article></div><section class="panel history-panel"><div class="panel-head"><div><p class="eyebrow">ИСТОРИЯ</p><h3>Последни тренировки</h3></div></div><div id="historyList"></div></section></section>
+        <footer class="app-footer"><span>IRONFORM <i>TRAINING STUDIO</i></span><span>Изградено за устойчив напредък.</span></footer>
       </div>
-
-      <div class="group-header" id="groupHeader">
-        <div class="group-heading">
-          <div class="group-icon-wrap" id="groupIconWrap" aria-hidden="true"></div>
-          <div><p class="group-label" id="groupLabel">МУСКУЛНА ГРУПА</p><h2 class="group-name" id="groupName">Бицепс</h2></div>
-        </div>
-        <div class="group-stats" aria-live="polite">
-          <span class="gstat"><strong id="exCount">—</strong><small>упражнения</small></span>
-          <span class="stats-divider"></span>
-          <span class="gstat"><strong id="musclesHit">—</strong><small>целеви мускули</small></span>
-        </div>
-      </div>
-
-      <div class="catalog-tools">
-        <label class="search-box" for="exerciseSearch">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
-          <input id="exerciseSearch" type="search" placeholder="Търси упражнение или мускул…" autocomplete="off">
-          <kbd>/</kbd>
-        </label>
-        <button class="favorites-filter" id="favoritesFilter" type="button" aria-pressed="false">
-          <span aria-hidden="true">♡</span><span>Любими</span><strong id="favoriteCount">0</strong>
-        </button>
-        <p class="load-status" id="loadStatus" aria-live="polite"></p>
-      </div>
-
-      <div class="results-heading"><h3>Упражнения</h3><span id="resultsSummary">Зареждаме библиотеката…</span></div>
-      <div class="exercises-grid" id="exercisesGrid" aria-live="polite" aria-busy="true"></div>
-      <div class="training-note"><span aria-hidden="true">✦</span><p><strong>Безопасността е на първо място.</strong> Избери тежест, която можеш да контролираш. Спри при болка и потърси професионален съвет при нужда.</p></div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M4 15h5v6H4zm23 0h5v6h-5zM10 11h4v14h-4zm12 0h4v14h-4zM14 16h8v4h-8z"/></svg></span><span class="brand-copy"><strong>IRON<span>FORM</span></strong><small>ТРЕНИРАЙ С ТЕХНИКА</small></span></a>
-    <p>Движи се добре. Ставай по-силен.</p>
-    <span>© <span id="currentYear"></span> IronForm</span>
-  </footer>
-
-  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
-    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" tabindex="-1">
-      <button class="modal-close" id="modalClose" type="button" aria-label="Затвори прозореца">×</button>
-      <div class="modal-inner">
-        <div class="modal-animation-wrap">
-          <div id="leftVideoContainer" class="left-video-container"></div>
-          <div class="rep-counter" id="repCounter" hidden><span id="repNum">0</span><small>анимационни повторения</small></div>
-        </div>
-        <div class="modal-info">
-          <span class="modal-tag" id="modalTag">Бицепс</span>
-          <h2 class="modal-title" id="modalTitle">Упражнение</h2>
-          <div class="modal-desc" id="modalDesc"></div>
-          <div class="modal-muscles" id="modalMuscles"></div>
-          <div class="modal-tips" id="modalTips"></div>
-          <div class="modal-sets">
-            <div class="set-item"><span>Серии</span><strong id="modalSets">3–4</strong></div>
-            <div class="set-item"><span>Повторения</span><strong id="modalReps">8–12</strong></div>
-            <div class="set-item"><span>Почивка</span><strong id="modalRest">60 сек</strong></div>
-          </div>
-          <div class="modal-actions"><button class="btn-start" id="btnStart" type="button">▶ Стартирай анимацията</button><button class="btn-stop hidden" id="btnStop" type="button">■ Спри анимацията</button></div>
-        </div>
-      </div>
-    </section>
+    </main>
   </div>
 
+  <nav class="mobile-nav" aria-label="Основна навигация"><button class="active" data-view="home"><span>⌂</span>Начало</button><button data-view="plan"><span>▦</span>План</button><button data-view="library"><span>◈</span>Упражнения</button><button data-view="progress"><span>↗</span>Прогрес</button></nav>
+
+  <dialog class="dialog" id="planDialog"><form method="dialog" id="planForm"><div class="dialog-top"><div><p class="eyebrow">НАСТРОЙ ЛИЧНИЯ СИ</p><h2>Тренировъчен план</h2><p>Използвай тези настройки, за да изградиш седмична структура.</p></div><button class="icon-button dialog-close" value="cancel" aria-label="Затвори">×</button></div><div class="form-grid"><label class="field"><span>Основна цел</span><select id="goal"><option value="muscle">Мускулна маса</option><option value="strength">Сила</option><option value="fitness">Обща физическа форма</option></select></label><label class="field"><span>Тренировъчен опит</span><select id="experience"><option value="beginner">Начинаещ — до 1 година</option><option value="intermediate">Средно напреднал — 1–3 години</option><option value="advanced">Напреднал — над 3 години</option></select></label><label class="field"><span>Дни седмично</span><select id="days"><option value="2">2 дни</option><option value="3" selected>3 дни</option><option value="4">4 дни</option><option value="5">5 дни</option></select></label><label class="field"><span>Време за тренировка</span><select id="duration"><option value="30">30 минути</option><option value="45">45 минути</option><option value="60" selected>60 минути</option><option value="75">75 минути</option></select></label><label class="field field-wide"><span>Оборудване</span><div class="equipment-options"><label><input type="radio" name="equipment" value="gym" checked><span><b>Пълна зала</b><small>Щанги, дъмбели и уреди</small></span></label><label><input type="radio" name="equipment" value="dumbbells"><span><b>Дъмбели</b><small>Домашна тренировка</small></span></label><label><input type="radio" name="equipment" value="bodyweight"><span><b>Собствено тегло</b><small>Без допълнителна екипировка</small></span></label></div></label></div><div class="dialog-note"><span>ⓘ</span><p>Планът е обща тренировъчна рамка. Съобрази натоварването със здравословното си състояние и потърси квалифициран специалист при нужда.</p></div><div class="dialog-actions"><button class="button button-quiet" value="cancel">Отказ</button><button class="button button-primary" id="savePlanButton" value="default">Създай моя план <span>→</span></button></div></form></dialog>
+
+  <dialog class="dialog workout-dialog" id="workoutDialog"><div id="workoutModalContent"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="data.js"></script>
-  <script src="lyfta-loader.js"></script>
-  <script src="app.js"></script>
+  <script src="planner.js"></script>
 </body>
 </html>
