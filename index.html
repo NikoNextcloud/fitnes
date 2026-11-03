@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=studio-v2">
+  <link rel="stylesheet" href="styles.css?v=studio-v3">
 </head>
 <body>
   <div class="app-shell">
@@ -53,6 +53,7 @@
   <dialog class="dialog" id="planDialog"><form method="dialog" id="planForm"><div class="dialog-top"><div><p class="eyebrow">НАСТРОЙ ЛИЧНИЯ СИ</p><h2>Тренировъчен план</h2><p>Използвай тези настройки, за да изградиш седмична структура.</p></div><button class="icon-button dialog-close" value="cancel" aria-label="Затвори">×</button></div><div class="form-grid"><label class="field"><span>Основна цел</span><select id="goal"><option value="muscle">Мускулна маса</option><option value="strength">Сила</option><option value="fitness">Обща физическа форма</option></select></label><label class="field"><span>Тренировъчен опит</span><select id="experience"><option value="beginner">Начинаещ — до 1 година</option><option value="intermediate">Средно напреднал — 1–3 години</option><option value="advanced">Напреднал — над 3 години</option></select></label><label class="field"><span>Дни седмично</span><select id="days"><option value="2">2 дни</option><option value="3" selected>3 дни</option><option value="4">4 дни</option><option value="5">5 дни</option></select></label><label class="field"><span>Време за тренировка</span><select id="duration"><option value="30">30 минути</option><option value="45">45 минути</option><option value="60" selected>60 минути</option><option value="75">75 минути</option></select></label><label class="field field-wide"><span>Оборудване</span><div class="equipment-options"><label><input type="radio" name="equipment" value="gym" checked><span><b>Пълна зала</b><small>Щанги, дъмбели и уреди</small></span></label><label><input type="radio" name="equipment" value="dumbbells"><span><b>Дъмбели</b><small>Домашна тренировка</small></span></label><label><input type="radio" name="equipment" value="bodyweight"><span><b>Собствено тегло</b><small>Без допълнителна екипировка</small></span></label></div></label></div><div class="dialog-note"><span>ⓘ</span><p>Планът е обща тренировъчна рамка. Съобрази натоварването със здравословното си състояние и потърси квалифициран специалист при нужда.</p></div><div class="dialog-actions"><button class="button button-quiet" value="cancel">Отказ</button><button class="button button-primary" id="savePlanButton" value="default">Създай моя план <span>→</span></button></div></form></dialog>
 
   <dialog class="dialog workout-dialog" id="workoutDialog"><div id="workoutModalContent"></div></dialog>
+  <dialog class="dialog exercise-dialog" id="exerciseDialog"><div id="exerciseDialogContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="data.js"></script>
   <script src="planner.js"></script>
