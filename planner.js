@@ -49,7 +49,7 @@
   function dateAtOffset(offset){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+offset);return d}
   function formatDate(value,options={day:"numeric",month:"short"}){return new Date(`${value}T12:00:00`).toLocaleDateString("bg-BG",options)}
   function showToast(message){const el=document.getElementById("toast");el.textContent=message;el.classList.add("show");clearTimeout(toastId);toastId=setTimeout(()=>el.classList.remove("show"),2500)}
-  function groupExercises(group){return (window.GROUPS?.[group]?.exercises||[]).map(x=>({...x,displayName:prettyNames[x.name]||x.name}))}
+  function groupExercises(group){const catalog=typeof GROUPS!=="undefined"?GROUPS:{};return (catalog[group]?.exercises||[]).map(x=>({...x,displayName:prettyNames[x.name]||x.name}))}
   function suitableExercises(group,equipment){
     const all=groupExercises(group);if(!all.length)return[];
     if(equipment==="gym")return all;
