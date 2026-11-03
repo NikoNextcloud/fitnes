@@ -995,7 +995,7 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay.addEventListener("click", event => { if (event.target === overlay) closeModal(); });
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && overlay.classList.contains("open")) closeModal();
-    if (event.key === "/" && !overlay.classList.contains("open") && !["INPUT","TEXTAREA"].includes(document.activeElement?.tagName)) {
+    if (event.key === "Tab" && overlay.classList.contains("open")) {\n      const focusable = [...overlay.querySelectorAll("button:not(.hidden), video[controls], [href], [tabindex]:not([tabindex=\\"-1\\"])")].filter(el => !el.disabled && el.offsetParent !== null);\n      const first = focusable[0], last = focusable[focusable.length - 1];\n      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }\n      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }\n    }\n    if (event.key === "/" && !overlay.classList.contains("open") && !["INPUT","TEXTAREA"].includes(document.activeElement?.tagName)) {
       event.preventDefault();
       search.focus();
     }
