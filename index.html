@@ -1,184 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IronForm — Фитнес Наръчник</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11130f">
+  <meta name="description" content="IronForm — практичен наръчник с видео демонстрации, инструкции и персонален план за тренировка.">
+  <title>IronForm — Тренирай с правилна техника</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-
-
-
-  <!-- HEADER -->
-  <header class="header">
+  <a class="skip-link" href="#catalog">Към упражненията</a>
+  <header class="site-header">
     <div class="header-inner">
-      <div class="logo">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect x="0" y="11" width="6" height="6" rx="1.5" fill="#E8FF47"/>
-          <rect x="22" y="11" width="6" height="6" rx="1.5" fill="#E8FF47"/>
-          <rect x="5" y="8" width="4" height="12" rx="2" fill="#E8FF47"/>
-          <rect x="19" y="8" width="4" height="12" rx="2" fill="#E8FF47"/>
-          <rect x="9" y="12" width="10" height="4" rx="2" fill="white"/>
-        </svg>
-        <span>IronForm</span>
-      </div>
-      <nav class="nav" id="mainNav">
-        <button class="nav-btn active" data-group="biceps"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt="Бицепс"></button>
-        <button class="nav-btn" data-group="triceps"><img class="tab-icon" src="muscle-icons/triceps_b.svg" alt="Трицепс"></button>
-        <button class="nav-btn" data-group="shoulders"><img class="tab-icon" src="muscle-icons/shoulders_b.svg" alt="Рамо"></button>
-        <button class="nav-btn" data-group="back"><img class="tab-icon" src="muscle-icons/back_b.svg" alt="Гръб"></button>
-        <button class="nav-btn" data-group="legs"><img class="tab-icon" src="muscle-icons/quadriceps_b.svg" alt="Крака"></button>
-        <button class="nav-btn" data-group="chest"><img class="tab-icon" src="muscle-icons/chest_b.svg" alt="Гърди"></button>
-      </nav>
-      <div class="gender-switch" id="genderSwitch">
-        <button class="gender-btn" data-gender="male"><span class="gender-symbol" aria-hidden="true">&#9794;</span> Мъж</button>
-        <button class="gender-btn active" data-gender="female"><span class="gender-symbol" aria-hidden="true">&#9792;</span> Жена</button>
-      </div>
-      <button class="hamburger" id="hamburger" aria-label="Меню">
+      <a class="brand" href="index.html" aria-label="IronForm — начало">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M4 15h5v6H4zm23 0h5v6h-5zM10 11h4v14h-4zm12 0h4v14h-4zM14 16h8v4h-8z"/></svg></span>
+        <span class="brand-copy"><strong>IRON<span>FORM</span></strong><small>ТРЕНИРАЙ С ТЕХНИКА</small></span>
+      </a>
+      <button class="hamburger" id="hamburger" type="button" aria-label="Отвори менюто" aria-controls="mainNav" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
+      <nav class="nav" id="mainNav" aria-label="Мускулни групи">
+        <button class="nav-btn active" type="button" role="tab" aria-selected="true" data-group="biceps"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt=""><span>Бицепс</span></button>
+        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="triceps"><img class="tab-icon" src="muscle-icons/triceps_b.svg" alt=""><span>Трицепс</span></button>
+        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="shoulders"><img class="tab-icon" src="muscle-icons/shoulders_b.svg" alt=""><span>Рамене</span></button>
+        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="back"><img class="tab-icon" src="muscle-icons/back_b.svg" alt=""><span>Гръб</span></button>
+        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="legs"><img class="tab-icon" src="muscle-icons/quadriceps_b.svg" alt=""><span>Крака</span></button>
+        <button class="nav-btn" type="button" role="tab" aria-selected="false" data-group="chest"><img class="tab-icon" src="muscle-icons/chest_b.svg" alt=""><span>Гърди</span></button>
+      </nav>
+      <div class="header-actions">
+        <a class="coach-link" href="coach.html"><span aria-hidden="true">✦</span> Създай план</a>
+        <div class="gender-switch" id="genderSwitch" role="group" aria-label="Филтър за упражнения">
+          <button class="gender-btn" type="button" data-gender="male" aria-pressed="false">Мъж</button>
+          <button class="gender-btn active" type="button" data-gender="female" aria-pressed="true">Жена</button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Твоята лична треньорка</p>
-      <h1 class="hero-title">Перфектна<br/><span class="accent">техника</span><br/>всеки път</h1>
-      <p class="hero-sub">6 мускулни групи · 180+ упражнения · Видео демонстрации за мъже и жени</p>
-    </div>
-    <div class="hero-figure">
-      <div class="hero-animation">
-        <svg class="hero-svg" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Леггинси / крака -->
-          <ellipse cx="84" cy="198" rx="12" ry="30" fill="#7ec8e3"/>
-          <ellipse cx="116" cy="198" rx="12" ry="30" fill="#7ec8e3"/>
-          <ellipse cx="84" cy="242" rx="9" ry="22" fill="#5ab4d0"/>
-          <ellipse cx="116" cy="242" rx="9" ry="22" fill="#5ab4d0"/>
-          <!-- Обувки -->
-          <rect x="74" y="260" width="22" height="10" rx="5" fill="#333"/>
-          <rect x="104" y="260" width="22" height="10" rx="5" fill="#333"/>
-          <!-- Акцентна линия на под -->
-          <rect x="0" y="272" width="200" height="2" fill="#E8FF47" opacity="0.6"/>
-          <!-- Таз / хип — женски широк -->
-          <ellipse cx="100" cy="172" rx="28" ry="16" fill="#c8df30"/>
-          <!-- Торс — спортен топ -->
-          <path d="M76 168 C74 150 80 115 85 105 C90 95 110 95 115 105 C120 115 126 150 124 168 Z" fill="#c8df30"/>
-          <!-- Спортен сутиен (горен акцент) -->
-          <path d="M85 108 C90 98 110 98 115 108 C112 116 88 116 85 108 Z" fill="#E8FF47"/>
-          <!-- Мишница лява -->
-          <ellipse class="hero-arm-l" cx="70" cy="130" rx="9" ry="20" fill="#F4C17A"/>
-          <!-- Предмишница лява -->
-          <ellipse class="hero-forearm-l" cx="58" cy="162" rx="7" ry="18" fill="#F4C17A" transform-origin="70 148"/>
-          <!-- Дъмбел ляв -->
-          <rect class="hero-weight-l" x="42" y="175" width="24" height="7" rx="3.5" fill="#E8FF47"/>
-          <rect x="40" y="172" width="8" height="13" rx="3" fill="#c8df30"/>
-          <rect x="60" y="172" width="8" height="13" rx="3" fill="#c8df30"/>
-          <!-- Мишница дясна -->
-          <ellipse class="hero-arm-r" cx="130" cy="130" rx="9" ry="20" fill="#F4C17A"/>
-          <!-- Предмишница дясна -->
-          <ellipse class="hero-forearm-r" cx="142" cy="162" rx="7" ry="18" fill="#F4C17A" transform-origin="130 148"/>
-          <!-- Дъмбел десен -->
-          <rect class="hero-weight-r" x="134" y="175" width="24" height="7" rx="3.5" fill="#E8FF47"/>
-          <rect x="132" y="172" width="8" height="13" rx="3" fill="#c8df30"/>
-          <rect x="152" y="172" width="8" height="13" rx="3" fill="#c8df30"/>
-          <!-- Врат -->
-          <ellipse cx="100" cy="97" rx="7" ry="10" fill="#F4C17A"/>
-          <!-- Глава -->
-          <ellipse cx="100" cy="75" rx="18" ry="20" fill="#F4C17A"/>
-          <!-- Коса отзад/страни -->
-          <ellipse cx="100" cy="64" rx="18" ry="12" fill="#3a2a1a"/>
-          <ellipse cx="84" cy="72" rx="8" ry="14" fill="#3a2a1a"/>
-          <ellipse cx="116" cy="72" rx="8" ry="14" fill="#3a2a1a"/>
-          <!-- Конска опашка -->
-          <path class="hero-ponytail" d="M118 62 C128 68 134 82 128 98 C124 110 120 118 116 126" stroke="#3a2a1a" stroke-width="9" stroke-linecap="round" fill="none"/>
-          <path d="M116 126 C112 136 112 144 114 150" stroke="#3a2a1a" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <!-- Ластик за опашка -->
-          <circle cx="119" cy="66" r="4" fill="#E8FF47"/>
-          <!-- Лента на главата -->
-          <path d="M82 62 Q100 56 118 62" stroke="#E8FF47" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <!-- Очи -->
-          <ellipse cx="93" cy="74" rx="3" ry="2.5" fill="#333"/>
-          <ellipse cx="107" cy="74" rx="3" ry="2.5" fill="#333"/>
-          <circle cx="94" cy="73" r="1" fill="white"/>
-          <circle cx="108" cy="73" r="1" fill="white"/>
-          <!-- Усмивка -->
-          <path d="M95 82 Q100 86 105 82" stroke="#c07050" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-        </svg>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> ТВОЯТ ФИТНЕС НАРЪЧНИК</p>
+        <h1>Силата започва<br>с <span>правилната техника.</span></h1>
+        <p class="hero-description">Избери мускулна група, разгледай движенията и тренирай уверено с ясни демонстрации и насоки.</p>
+        <div class="hero-actions">
+          <a class="hero-cta" href="#catalog">Разгледай упражненията <span aria-hidden="true">↓</span></a>
+          <a class="hero-secondary" href="coach.html"><span class="sparkle" aria-hidden="true">✦</span> Направи ми план</a>
+        </div>
+        <div class="hero-proof"><span class="proof-icon" aria-hidden="true">✓</span><span>Практични инструкции · Видео демонстрации · Запазени любими</span></div>
       </div>
-    </div>
-  </section>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="art-glow"></div>
+        <div class="art-card art-card-top"><span class="art-card-icon">↗</span><span><strong>Контролирай</strong><small>всяко повторение</small></span></div>
+        <div class="art-athlete">
+          <div class="athlete-head"></div><div class="athlete-neck"></div><div class="athlete-torso"></div>
+          <div class="athlete-arm arm-left"></div><div class="athlete-arm arm-right"></div>
+          <div class="athlete-leg leg-left"></div><div class="athlete-leg leg-right"></div>
+          <div class="athlete-weight"><i></i><b></b><i></i></div>
+        </div>
+        <div class="art-card art-card-bottom"><span class="art-check">✓</span><span><strong>Форма преди тежест</strong><small>Тренирай разумно</small></span></div>
+        <div class="art-caption">ДВИЖЕНИЕ С ЦЕЛ</div>
+      </div>
+      <div class="hero-bottom-line"><span>01 / 06</span><span class="hero-line"></span><span>ИЗБЕРИ СВОЯТА ГРУПА</span></div>
+    </section>
 
-  <!-- МУСКУЛНА ГРУПА ХЕДЪР -->
-  <section class="group-header" id="groupHeader">
-    <div class="group-header-inner">
-      <div class="group-icon-wrap" id="groupIconWrap">
-        <!-- иконата се инжектира от JS -->
+    <section class="catalog-section" id="catalog" aria-labelledby="groupName">
+      <div class="catalog-intro">
+        <div>
+          <p class="eyebrow">БИБЛИОТЕКА С УПРАЖНЕНИЯ</p>
+          <h2>Намери следващото си <span>движение.</span></h2>
+        </div>
+        <p class="catalog-note">Избери упражнение, за да видиш демонстрацията, сериите и насоките за изпълнение.</p>
       </div>
-      <div>
-        <p class="group-label" id="groupLabel">Мускулна група</p>
-        <h2 class="group-name" id="groupName"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt="Бицепс"></h2>
-      </div>
-      <div class="group-stats">
-        <span class="gstat"><strong id="exCount">5</strong> упражнения</span>
-        <span class="gstat"><strong id="musclesHit">2</strong> мускула</span>
-      </div>
-    </div>
-  </section>
 
-  <!-- УПРАЖНЕНИЯ ГРИД -->
-  <main class="exercises-grid" id="exercisesGrid">
-    <!-- Попълва се от JS -->
+      <div class="group-header" id="groupHeader">
+        <div class="group-heading">
+          <div class="group-icon-wrap" id="groupIconWrap" aria-hidden="true"></div>
+          <div><p class="group-label" id="groupLabel">МУСКУЛНА ГРУПА</p><h2 class="group-name" id="groupName">Бицепс</h2></div>
+        </div>
+        <div class="group-stats" aria-live="polite">
+          <span class="gstat"><strong id="exCount">—</strong><small>упражнения</small></span>
+          <span class="stats-divider"></span>
+          <span class="gstat"><strong id="musclesHit">—</strong><small>целеви мускули</small></span>
+        </div>
+      </div>
+
+      <div class="catalog-tools">
+        <label class="search-box" for="exerciseSearch">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+          <input id="exerciseSearch" type="search" placeholder="Търси упражнение или мускул…" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <button class="favorites-filter" id="favoritesFilter" type="button" aria-pressed="false">
+          <span aria-hidden="true">♡</span><span>Любими</span><strong id="favoriteCount">0</strong>
+        </button>
+        <p class="load-status" id="loadStatus" aria-live="polite"></p>
+      </div>
+
+      <div class="results-heading"><h3>Упражнения</h3><span id="resultsSummary">Зареждаме библиотеката…</span></div>
+      <div class="exercises-grid" id="exercisesGrid" aria-live="polite" aria-busy="true"></div>
+      <div class="training-note"><span aria-hidden="true">✦</span><p><strong>Безопасността е на първо място.</strong> Избери тежест, която можеш да контролираш. Спри при болка и потърси професионален съвет при нужда.</p></div>
+    </section>
   </main>
 
-  <!-- МОДАЛЕН ПРОЗОРЕЦ -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modal">
-      <button class="modal-close" id="modalClose">✕</button>
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="index.html"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36"><path d="M4 15h5v6H4zm23 0h5v6h-5zM10 11h4v14h-4zm12 0h4v14h-4zM14 16h8v4h-8z"/></svg></span><span class="brand-copy"><strong>IRON<span>FORM</span></strong><small>ТРЕНИРАЙ С ТЕХНИКА</small></span></a>
+    <p>Движи се добре. Ставай по-силен.</p>
+    <span>© <span id="currentYear"></span> IronForm</span>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" tabindex="-1">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Затвори прозореца">×</button>
       <div class="modal-inner">
         <div class="modal-animation-wrap">
           <div id="leftVideoContainer" class="left-video-container"></div>
-          <div class="rep-counter">
-            <span id="repNum">0</span>
-            <small>повторения</small>
-          </div>
+          <div class="rep-counter" id="repCounter" hidden><span id="repNum">0</span><small>анимационни повторения</small></div>
         </div>
         <div class="modal-info">
-          <div id="modalMedia" class="modal-media"></div>
-          <span class="modal-tag" id="modalTag"><img class="tab-icon" src="muscle-icons/biceps_b.svg" alt="Бицепс"></span>
-          <h3 class="modal-title" id="modalTitle">Упражнение</h3>
+          <span class="modal-tag" id="modalTag">Бицепс</span>
+          <h2 class="modal-title" id="modalTitle">Упражнение</h2>
           <div class="modal-desc" id="modalDesc"></div>
           <div class="modal-muscles" id="modalMuscles"></div>
           <div class="modal-tips" id="modalTips"></div>
           <div class="modal-sets">
-            <div class="set-item">
-              <span>Серии</span>
-              <strong id="modalSets">3–4</strong>
-            </div>
-            <div class="set-item">
-              <span>Повторения</span>
-              <strong id="modalReps">8–12</strong>
-            </div>
-            <div class="set-item">
-              <span>Почивка</span>
-              <strong id="modalRest">60 сек</strong>
-            </div>
+            <div class="set-item"><span>Серии</span><strong id="modalSets">3–4</strong></div>
+            <div class="set-item"><span>Повторения</span><strong id="modalReps">8–12</strong></div>
+            <div class="set-item"><span>Почивка</span><strong id="modalRest">60 сек</strong></div>
           </div>
-          <button class="btn-start" id="btnStart">▶ Стартирай</button>
-          <button class="btn-stop hidden" id="btnStop">◼ Спри</button>
+          <div class="modal-actions"><button class="btn-start" id="btnStart" type="button">▶ Стартирай анимацията</button><button class="btn-stop hidden" id="btnStop" type="button">■ Спри анимацията</button></div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 
   <script src="data.js"></script>
   <script src="lyfta-loader.js"></script>
   <script src="app.js"></script>
-  <script src="coach.js"></script>
 </body>
 </html>

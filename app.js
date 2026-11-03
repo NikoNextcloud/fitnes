@@ -730,40 +730,63 @@ class ExerciseAnimator {
 }
 
 /* =====================================================
-   PREVIEW АНИМАЦИИ НА КАРТИЧКИТЕ
+   IRONFORM — КАТАЛОГ, ТЪРСЕНЕ И ЛЮБИМИ
    ===================================================== */
 
 const previewAnimators = {};
+let currentGroup = "biceps";
+let currentGender = (() => {
+  try {
+    const saved = localStorage.getItem("ironform.gender");
+    return saved === "male" || saved === "female" ? saved : "female";
+  } catch { return "female"; }
+})();
+let showFavoritesOnly = false;
+let searchQuery = "";
+let modalAnimator = null;
+let lastModalTrigger = null;
+let favorites = (() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem("ironform.favorites") || "[]");
+    return new Set(Array.isArray(saved) ? saved.map(String) : []);
+  } catch { return new Set(); }
+})();
 
-function startPreview(canvas, animType) {
-  const key = canvas.id;
-  if (previewAnimators[key]) previewAnimators[key].stop();
-  const anim = new ExerciseAnimator(canvas, animType);
-  previewAnimators[key] = anim;
-  anim.start();
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[char]));
 }
 
-/* =====================================================
-   РЕНДЕР
-   ===================================================== */
-
-let currentGroup = "biceps";
-let currentGender = "female"; // "male" | "female"
-let modalAnimator = null;
+function persistPreferences() {
+  try {
+    localStorage.setItem("ironform.gender", currentGender);
+    localStorage.setItem("ironform.favorites", JSON.stringify([...favorites]));
+  } catch (error) {
+    console.warn("IronForm: preferences could not be saved", error);
+  }
+}
 
 function resetRepCounter() {
   clearInterval(window.repTimer);
   window.repTimer = null;
-  document.getElementById("repNum").textContent = "0";
+  const rep = document.getElementById("repNum");
+  if (rep) rep.textContent = "0";
 }
 
-// Връща активния набор групи: от JSON-а спрямо избрания пол,
-// а ако JSON-ът още не е зареден — резервно от data.js (GROUPS)
 function activeGroups() {
-  if (window.LYFTA_DB && window.LYFTA_DB[currentGender]) {
-    return window.LYFTA_DB[currentGender];
-  }
+  if (window.LYFTA_DB && window.LYFTA_DB[currentGender]) return window.LYFTA_DB[currentGender];
   return (typeof GROUPS === "object") ? GROUPS : {};
+}
+
+function groupExercises(group) {
+  const query = searchQuery.trim().toLocaleLowerCase("bg");
+  return group.exercises
+    .map((ex, index) => ({ ex, index }))
+    .filter(({ ex }) => {
+      const text = [ex.name, ...(ex.primaryMuscles || []), ...(ex.secondaryMuscles || [])].join(" ").toLocaleLowerCase("bg");
+      return (!query || text.includes(query)) && (!showFavoritesOnly || favorites.has(String(ex.id)));
+    });
 }
 
 function renderGroup(groupKey) {
@@ -771,202 +794,230 @@ function renderGroup(groupKey) {
   const group = activeGroups()[groupKey];
   if (!group) return;
 
-  document.getElementById("groupName").textContent  = group.name;
-  document.getElementById("groupLabel").textContent = "Мускулна група";
-  document.getElementById("exCount").textContent    = group.exercises.length;
+  document.getElementById("groupName").textContent = group.name;
+  document.getElementById("groupLabel").textContent = "МУСКУЛНА ГРУПА";
+  document.getElementById("exCount").textContent = groupExercises(group).length;
   document.getElementById("musclesHit").textContent = group.muscles.length;
-  document.getElementById("groupIconWrap").innerHTML = group.icon;
+  document.getElementById("groupIconWrap").innerHTML = group.icon || "";
+  document.getElementById("favoriteCount").textContent = favorites.size;
+  document.getElementById("favoritesFilter").setAttribute("aria-pressed", String(showFavoritesOnly));
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    const selected = btn.dataset.group === groupKey;
+    btn.classList.toggle("active", selected);
+    btn.setAttribute("aria-selected", String(selected));
+    btn.tabIndex = selected ? 0 : -1;
+  });
+  document.querySelectorAll(".gender-btn").forEach(btn => {
+    const selected = btn.dataset.gender === currentGender;
+    btn.classList.toggle("active", selected);
+    btn.setAttribute("aria-pressed", String(selected));
+  });
 
-  Object.values(previewAnimators).forEach(a => a.stop());
-
+  Object.values(previewAnimators).forEach(animator => animator.stop());
   const grid = document.getElementById("exercisesGrid");
+  const matches = groupExercises(group);
+  grid.setAttribute("aria-busy", "false");
   grid.innerHTML = "";
 
-  group.exercises.forEach((ex, i) => {
-    const canvasId = `prev-${groupKey}-${i}`;
-
-    const card = document.createElement("div");
-    card.className = "ex-card";
-    card.innerHTML = `
-      <div class="ex-card-preview">
-        ${ex.video ? `<video class="card-video" muted preload="metadata"><source src="${ex.video}" type="video/mp4"></video>` : `<canvas id="${canvasId}" width="260" height="180"></canvas>`}
-        <span class="ex-card-badge">${ex.difficulty}</span>
-      </div>
-      <div class="ex-card-body">
-        <h3 class="ex-card-name">${ex.name}</h3>
-        <div class="ex-card-meta">
-          <span>⏱ ${ex.sets} серии</span>
-          <span>🔁 ${ex.reps} повт.</span>
-        </div>
-        <div class="ex-card-muscles">
-          ${ex.primaryMuscles.map(m => `<span class="muscle-tag primary">${m}</span>`).join("")}
-          ${ex.secondaryMuscles.map(m => `<span class="muscle-tag">${m}</span>`).join("")}
-        </div>
-        <div class="ex-card-cta">
-          <span class="ex-card-sets">Почивка: <strong>${ex.rest}</strong></span>
-          <button class="btn-watch" data-idx="${i}">▶ Виж</button>
-        </div>
-      </div>
-    `;
-
-    grid.appendChild(card);
-
-    requestAnimationFrame(() => {
-      const canvas = document.getElementById(canvasId);
-      if (canvas) startPreview(canvas, ex.animType);
+  if (!matches.length) {
+    grid.innerHTML = `<div class="empty-state"><span class="empty-state-icon" aria-hidden="true">⌕</span><h3>${showFavoritesOnly ? "Още нямаш любими тук" : "Няма намерени упражнения"}</h3><p>${showFavoritesOnly ? "Натисни сърцето на упражнение, за да го запазиш." : "Промени думата за търсене и опитай отново."}</p></div>`;
+  } else {
+    matches.forEach(({ ex, index }) => {
+      const canvasId = `prev-${groupKey}-${index}`;
+      const primary = Array.isArray(ex.primaryMuscles) ? ex.primaryMuscles : [];
+      const secondary = Array.isArray(ex.secondaryMuscles) ? ex.secondaryMuscles : [];
+      const media = ex.video
+        ? `<video muted playsinline preload="metadata" aria-hidden="true" ${ex.image ? `poster="${escapeHTML(ex.image)}"` : ""}><source src="${escapeHTML(ex.video)}" type="video/mp4"></video>`
+        : ex.image
+          ? `<img src="${escapeHTML(ex.image)}" alt="" loading="lazy">`
+          : ex.animType
+            ? `<canvas id="${canvasId}" width="260" height="180" aria-hidden="true"></canvas>`
+            : `<span class="exercise-art" aria-hidden="true">${escapeHTML((group.name || "I").slice(0, 1))}</span>`;
+      const card = document.createElement("article");
+      card.className = "ex-card";
+      card.innerHTML = `
+        <button class="ex-card-open" type="button" data-open="${index}" aria-label="Отвори упражнение: ${escapeHTML(ex.name)}">
+          <div class="ex-card-preview">
+            ${media}
+            <span class="ex-card-badge">${escapeHTML(ex.difficulty || "Средно")}</span>
+          </div>
+          <div class="ex-card-body">
+            <span class="ex-card-name">${escapeHTML(ex.name)}</span>
+            <span class="ex-card-meta">
+              <span>▦ ${escapeHTML(ex.sets || "3–4")} серии</span>
+              <span>↻ ${escapeHTML(ex.reps || "8–12")} повт.</span>
+            </span>
+            <span class="ex-card-muscles">
+              ${primary.map(m => `<span class="muscle-tag primary">${escapeHTML(m)}</span>`).join("")}
+              ${secondary.slice(0, 2).map(m => `<span class="muscle-tag">${escapeHTML(m)}</span>`).join("")}
+            </span>
+            <span class="ex-card-cta"><span>Почивка: <strong>${escapeHTML(ex.rest || "60 сек")}</strong></span><span class="btn-watch"><span aria-hidden="true">▶</span> Техника</span></span>
+          </div>
+        </button>
+        <button class="favorite-btn" type="button" data-favorite="${escapeHTML(ex.id)}" aria-label="${favorites.has(String(ex.id)) ? "Премахни от любими" : "Добави в любими"}: ${escapeHTML(ex.name)}" aria-pressed="${favorites.has(String(ex.id))}"><span aria-hidden="true">${favorites.has(String(ex.id)) ? "♥" : "♡"}</span></button>
+      `;
+      grid.appendChild(card);
+      const canvas = card.querySelector("canvas");
+      if (canvas && ex.animType && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        requestAnimationFrame(() => {
+          if (canvas.isConnected) {
+            const animator = new ExerciseAnimator(canvas, ex.animType);
+            previewAnimators[canvas.id] = animator;
+            animator.start();
+          }
+        });
+      }
     });
+  }
 
-    card.addEventListener("click", () => openModal(groupKey, i));
-  });
-
-  document.querySelectorAll(".nav-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.group === groupKey);
-  });
+  document.getElementById("resultsSummary").textContent =
+    `${matches.length} от ${group.exercises.length} упражнения`;
 }
 
-/* =====================================================
-   МОДАЛ
-   ===================================================== */
-
-function openModal(groupKey, idx) {
-  const ex    = activeGroups()[groupKey].exercises[idx];
+function openModal(groupKey, idx, trigger) {
   const group = activeGroups()[groupKey];
-
-  document.getElementById("modalTag").textContent   = group.name;
+  const ex = group?.exercises?.[idx];
+  if (!ex) return;
+  lastModalTrigger = trigger || document.activeElement;
+  document.getElementById("modalTag").textContent = group.name;
   document.getElementById("modalTitle").textContent = ex.name;
-  document.getElementById("modalDesc").textContent  = ex.desc;
-  document.getElementById("modalSets").textContent  = ex.sets;
-  document.getElementById("modalReps").textContent  = ex.reps;
-  document.getElementById("modalRest").textContent  = ex.rest;
-  resetRepCounter();
-
-  const mediaEl = document.getElementById("modalMedia");
-  mediaEl.innerHTML = "";
+  document.getElementById("modalDesc").textContent = ex.desc || "Изпълнявай с контролирано движение и стабилна позиция.";
+  document.getElementById("modalSets").textContent = ex.sets || "3–4";
+  document.getElementById("modalReps").textContent = ex.reps || "8–12";
+  document.getElementById("modalRest").textContent = ex.rest || "60 сек";
+  document.getElementById("modalMuscles").innerHTML = [
+    ...(ex.primaryMuscles || []).map(m => `<span class="muscle-tag primary">${escapeHTML(m)}</span>`),
+    ...(ex.secondaryMuscles || []).map(m => `<span class="muscle-tag">${escapeHTML(m)}</span>`)
+  ].join("");
+  document.getElementById("modalTips").innerHTML =
+    `<h3>Насоки за изпълнение</h3><ul>${(ex.tips || []).map(t => `<li>${escapeHTML(t)}</li>`).join("")}</ul>`;
 
   const leftVideo = document.getElementById("leftVideoContainer");
   leftVideo.innerHTML = "";
-  if (ex.video) {
-    leftVideo.innerHTML = `<video controls autoplay preload="metadata" style="width:100%;border-radius:12px;"><source src="${ex.video}" type="video/mp4"></video>`;
-  } else if (ex.image) {
-    leftVideo.innerHTML = `<img src="${ex.image}" alt="${ex.name}" style="width:100%;border-radius:12px;">`;
-  }
-
-
-  const mEl = document.getElementById("modalMuscles");
-  mEl.innerHTML = [
-    ...ex.primaryMuscles.map(m => `<span class="muscle-tag primary">${m}</span>`),
-    ...ex.secondaryMuscles.map(m => `<span class="muscle-tag">${m}</span>`)
-  ].join("");
-
-  const tEl = document.getElementById("modalTips");
-  tEl.innerHTML = `<h4>💡 Ключови точки</h4><ul>${ex.tips.map(t => `<li>${t}</li>`).join("")}</ul>`;
-
-  // Спри стара анимация — брояч -> 0
-  if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
-  document.getElementById("btnStart").classList.remove("hidden");
+  const hasAnimation = !ex.video && !ex.image && Boolean(ex.animType);
+  document.getElementById("repCounter").hidden = !hasAnimation;
+  document.getElementById("btnStart").classList.toggle("hidden", !hasAnimation);
   document.getElementById("btnStop").classList.add("hidden");
-  resetRepCounter();
 
-  const canvas = document.getElementById("exerciseCanvas");
-  if(canvas){
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle="#111";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+  if (ex.video) {
+    leftVideo.innerHTML = `<video controls playsinline preload="metadata" ${ex.image ? `poster="${escapeHTML(ex.image)}"` : ""} aria-label="Видео демонстрация: ${escapeHTML(ex.name)}"><source src="${escapeHTML(ex.video)}" type="video/mp4">Браузърът не поддържа това видео.</video>`;
+  } else if (ex.image) {
+    leftVideo.innerHTML = `<img src="${escapeHTML(ex.image)}" alt="Демонстрация на ${escapeHTML(ex.name)}">`;
+  } else if (hasAnimation) {
+    leftVideo.innerHTML = '<canvas id="exerciseCanvas" width="320" height="360" aria-label="Анимация на упражнението"></canvas>';
+  } else {
+    leftVideo.innerHTML = `<span class="exercise-art" aria-hidden="true">${escapeHTML((group.name || "I").slice(0, 1))}</span>`;
   }
+
+  if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
+  resetRepCounter();
+  document.getElementById("modalOverlay").classList.add("open");
+  document.getElementById("modalOverlay").setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  document.getElementById("modalClose").focus();
 
   document.getElementById("btnStart").onclick = () => {
+    const canvas = document.getElementById("exerciseCanvas");
+    if (!canvas) return;
     resetRepCounter();
-    if (!canvas) {
-      let reps = 0;
-      window.repTimer = setInterval(() => {
-        reps++;
-        document.getElementById("repNum").textContent = reps;
-      }, 1500);
-      document.getElementById("btnStart").classList.add("hidden");
-      document.getElementById("btnStop").classList.remove("hidden");
-      return;
-    }
-    if (modalAnimator) modalAnimator.stop();
     modalAnimator = new ExerciseAnimator(canvas, ex.animType);
-    // Брояч стартира от 0 при всяко натискане
-    modalAnimator.reps = 0;
-    modalAnimator.onRep = (n) => {
-      document.getElementById("repNum").textContent = n;
-    };
+    modalAnimator.onRep = n => { document.getElementById("repNum").textContent = n; };
     modalAnimator.start();
     document.getElementById("btnStart").classList.add("hidden");
     document.getElementById("btnStop").classList.remove("hidden");
   };
-
   document.getElementById("btnStop").onclick = () => {
     resetRepCounter();
     if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
     document.getElementById("btnStart").classList.remove("hidden");
     document.getElementById("btnStop").classList.add("hidden");
   };
-
-  document.getElementById("modalOverlay").classList.add("open");
-  document.body.style.overflow = "hidden";
 }
 
 function closeModal() {
-  resetRepCounter();
   if (modalAnimator) { modalAnimator.stop(); modalAnimator = null; }
-  document.getElementById("modalOverlay").classList.remove("open");
+  resetRepCounter();
+  const overlay = document.getElementById("modalOverlay");
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
   document.getElementById("btnStart").classList.remove("hidden");
   document.getElementById("btnStop").classList.add("hidden");
+  if (lastModalTrigger?.isConnected) lastModalTrigger.focus();
 }
 
-/* =====================================================
-   ИНИЦИАЛИЗАЦИЯ
-   ===================================================== */
-
 document.addEventListener("DOMContentLoaded", () => {
+  const nav = document.getElementById("mainNav");
+  const hamburger = document.getElementById("hamburger");
+  const search = document.getElementById("exerciseSearch");
+  const grid = document.getElementById("exercisesGrid");
+  const loadStatus = document.getElementById("loadStatus");
+  const overlay = document.getElementById("modalOverlay");
+
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       renderGroup(btn.dataset.group);
-      document.getElementById("mainNav").classList.remove("open");
+      nav.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
     });
   });
-
-  // Превключвател Мъж / Жена
   document.querySelectorAll(".gender-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       currentGender = btn.dataset.gender;
-      document.querySelectorAll(".gender-btn").forEach(b =>
-        b.classList.toggle("active", b.dataset.gender === currentGender)
-      );
-      renderGroup(currentGroup); // презарежда упражненията за новия пол
+      persistPreferences();
+      renderGroup(currentGroup);
     });
   });
-
+  search.addEventListener("input", () => {
+    searchQuery = search.value;
+    renderGroup(currentGroup);
+  });
+  document.getElementById("favoritesFilter").addEventListener("click", event => {
+    showFavoritesOnly = !showFavoritesOnly;
+    event.currentTarget.setAttribute("aria-pressed", String(showFavoritesOnly));
+    renderGroup(currentGroup);
+  });
+  grid.addEventListener("click", event => {
+    const favorite = event.target.closest("[data-favorite]");
+    if (favorite) {
+      event.stopPropagation();
+      const id = String(favorite.dataset.favorite);
+      favorites.has(id) ? favorites.delete(id) : favorites.add(id);
+      persistPreferences();
+      renderGroup(currentGroup);
+      return;
+    }
+    const open = event.target.closest("[data-open]");
+    if (open) openModal(currentGroup, Number(open.dataset.open), open);
+  });
   document.getElementById("modalClose").addEventListener("click", closeModal);
-  document.getElementById("modalOverlay").addEventListener("click", (e) => {
-    if (e.target === document.getElementById("modalOverlay")) closeModal();
+  overlay.addEventListener("click", event => { if (event.target === overlay) closeModal(); });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && overlay.classList.contains("open")) closeModal();
+    if (event.key === "/" && !overlay.classList.contains("open") && !["INPUT","TEXTAREA"].includes(document.activeElement?.tagName)) {
+      event.preventDefault();
+      search.focus();
+    }
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
+  hamburger.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("open");
+    hamburger.setAttribute("aria-expanded", String(isOpen));
   });
 
-  document.getElementById("hamburger").addEventListener("click", () => {
-    document.getElementById("mainNav").classList.toggle("open");
-  });
-
-  // Зареждаме упражненията от JSON-а, после рендираме
-  const grid = document.getElementById("exercisesGrid");
-  if (grid) grid.innerHTML = `<p style="padding:2rem;opacity:.7">Зареждам упражненията…</p>`;
-
+  grid.innerHTML = '<div class="empty-state"><p>Зареждаме библиотеката с упражнения…</p></div>';
+  grid.setAttribute("aria-busy", "true");
   loadLyftaExercises()
     .then(() => {
+      loadStatus.textContent = "Библиотеката е обновена";
+      grid.setAttribute("aria-busy", "false");
       renderGroup(currentGroup);
+      window.setTimeout(() => { loadStatus.textContent = ""; }, 2600);
     })
-    .catch(err => {
-      console.error(err);
-      // Резервен вариант: показваме локалния набор от data.js
-      if (grid) grid.innerHTML =
-        `<p style="padding:2rem;color:#ff6">Не успях да заредя JSON кеша (${err.message}). ` +
-        `Стартирай проекта през локален сървър. Показвам резервните упражнения.</p>`;
+    .catch(error => {
+      console.error(error);
+      loadStatus.textContent = "Показваме резервния набор упражнения";
+      grid.setAttribute("aria-busy", "false");
       renderGroup(currentGroup);
     });
 });

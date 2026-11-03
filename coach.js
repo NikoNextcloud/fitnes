@@ -1,4 +1,4 @@
-(() => {
+(() => {\n  // This script owns only the dedicated coach page; it must never replace the catalog.\n  if (document.body?.dataset.page !== "coach") return;
   const LYFTA_BASE_URL = "https://my.lyfta.app";
   const LYFTA_PROXY_URL = "http://127.0.0.1:8767/api/lyfta-exercises";
   const LYFTA_CACHE_URL = "lyfta_exercises_cache.json";
