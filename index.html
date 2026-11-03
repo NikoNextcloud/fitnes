@@ -2,60 +2,79 @@
 <html lang="bg">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f6f2">
-  <meta name="description" content="Създай план, води тренировките си и следи прогреса си с IronForm.">
-  <title>IronForm — Тренировъчен план и прогрес</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7f3">
+  <meta name="description" content="Лесен тренировъчен план, запис на сериите и проследяване на прогреса.">
+  <title>IronForm — Тренирай стъпка по стъпка</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=studio-v3">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=phone-v1">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" aria-label="Основна навигация">
-      <a class="brand" href="#home" aria-label="IronForm начало"><span class="brand-mark">I</span><span class="brand-word">ironform<small>TRAINING STUDIO</small></span></a>
-      <div class="side-label">РАБОТНО ПРОСТРАНСТВО</div>
-      <nav class="side-nav">
-        <button class="side-link active" data-view="home"><span class="side-icon">⌂</span>Общ преглед</button>
-        <button class="side-link" data-view="plan"><span class="side-icon">▦</span>Моят план</button>
-        <button class="side-link" data-view="library"><span class="side-icon">◈</span>Упражнения</button>
-        <button class="side-link" data-view="progress"><span class="side-icon">↗</span>Прогрес</button>
-      </nav>
-      <div class="sidebar-spacer"></div>
-      <div class="coach-card"><div class="coach-symbol">✳</div><strong>Тренируй с план</strong><p>Напасни програмата към целта и графика си.</p><button class="text-button" data-view="plan">Настрой плана <span>→</span></button></div>
-      <div class="profile-mini"><div class="avatar">И</div><div><strong>Моят профил</strong><small>Лични тренировки</small></div><button class="icon-button" id="settingsShortcut" aria-label="Настройки на плана">⚙</button></div>
-    </aside>
+  <header class="app-header">
+    <a class="brand" href="#home" aria-label="IronForm — начало"><span class="brand-mark">I</span><span>ironform</span></a>
+    <div class="header-right"><span id="todayLabel"></span><button class="header-settings" id="settingsShortcut" aria-label="Настройки на плана">⚙</button></div>
+  </header>
 
-    <main class="main-area">
-      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">I</span><strong>ironform</strong></div><div class="crumb" id="pageCrumb">Тренировъчно студио <span>/</span> Общ преглед</div><div class="top-actions"><span class="today-label" id="todayLabel"></span><button class="top-avatar" aria-label="Профил">И</button></div></header>
-      <div class="content-wrap">
-        <section class="view active" id="view-home" aria-labelledby="homeTitle">
-          <div class="welcome-row"><div><p class="eyebrow" id="welcomeDate">ТРЕНИРОВЪЧНО СТУДИО</p><h1 id="homeTitle">Здравей, <span>спортист.</span></h1><p class="lead">Малки стъпки. Последователност. Истински напредък.</p></div><button class="button button-quiet" data-view="plan">⚙ <span>Настройки на плана</span></button></div>
-          <div class="hero-panel"><div class="hero-copy"><div class="hero-chip"><i></i><span id="nextWorkoutBadge">ПЛАНЪТ ТЕ ЧАКА</span></div><h2 id="nextWorkoutTitle">Изгради своя<br><em>ритъм.</em></h2><p id="nextWorkoutCopy">Създай план според целта, опита и времето, с което разполагаш.</p><div class="hero-buttons"><button class="button button-primary" id="heroAction">Създай тренировъчен план <span>→</span></button><button class="button button-outline" data-view="library">Разгледай упражненията</button></div></div><div class="hero-visual" aria-hidden="true"><div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div><div class="visual-orbit"></div><div class="visual-disc"><span>IF</span></div><div class="visual-stats"><small>ДНЕС Е ДОБЪР ДЕН</small><strong>за движение <span>↗</span></strong></div></div><div class="hero-index">01 <span>/</span> 04</div></div>
-          <div class="section-heading"><div><p class="eyebrow">ПОГЛЕД ОТБЛИЗО</p><h2>Твоят напредък</h2></div><button class="link-button" data-view="progress">Виж статистиката <span>→</span></button></div>
-          <div class="metrics-grid"><article class="metric-card"><div class="metric-top"><span>Тренировки тази седмица</span><span class="metric-icon">▦</span></div><strong id="metricSessions">0 <small>/ 0</small></strong><div class="metric-foot"><span class="metric-bar"><i id="weeklyBar"></i></span><small id="weeklyCaption">Създай план, за да започнеш</small></div></article><article class="metric-card"><div class="metric-top"><span>Общо тренировки</span><span class="metric-icon">✳</span></div><strong id="metricTotal">0</strong><div class="metric-foot"><span class="metric-note">Записаните тренировки се пазят на това устройство.</span></div></article><article class="metric-card"><div class="metric-top"><span>Серия от седмици</span><span class="metric-icon">↗</span></div><strong id="metricStreak">0 <small>седмици</small></strong><div class="metric-foot"><span class="metric-note">Последователността е най-добрата стратегия.</span></div></article></div>
-          <div class="bottom-grid"><section class="panel week-panel"><div class="panel-head"><div><p class="eyebrow">ТВОЯТ ГРАФИК</p><h3>Тази седмица</h3></div><button class="link-button" data-view="plan">Цял план →</button></div><div class="week-strip" id="weekStrip"></div><div class="up-next" id="upNext"></div></section><section class="panel principle-panel"><p class="eyebrow">ПРИНЦИП НА СЕДМИЦАТА</p><div class="principle-mark">“</div><h3>Техниката е<br>твоята основа.</h3><p>Започни с тежест, която контролираш във всяко повторение. Добавяй натоварване постепенно, когато формата ти остане стабилна.</p><div class="principle-footer"><span>IRONFORM NOTES</span><span>01 — 04</span></div></section></div>
-        </section>
+  <main class="app-main">
+    <section class="view active" id="view-home" aria-labelledby="homeTitle">
+      <p class="eyebrow" id="welcomeDate">ТРЕНИРОВЪЧНО СТУДИО</p>
+      <h1 id="homeTitle">Здравей, <span>спортист.</span></h1>
+      <p class="intro">Тук е следващата ти тренировка.</p>
 
-        <section class="view" id="view-plan" aria-labelledby="planTitle"><div class="page-heading"><div><p class="eyebrow">ПЕРСОНАЛНА ПРОГРАМА</p><h1 id="planTitle">Моят <span>план.</span></h1><p class="lead">Структуриран график, съобразен с твоите цели и възможности.</p></div><button class="button button-primary" id="editPlanButton">⚙ Настрой плана</button></div><div id="planContent"></div></section>
+      <article class="today-card">
+        <span class="today-kicker"><i></i><span id="nextWorkoutBadge">ПЛАНЪТ ТЕ ЧАКА</span></span>
+        <h2 id="nextWorkoutTitle">Изгради своя ритъм.</h2>
+        <p id="nextWorkoutCopy">Създай кратък план според целта и времето, с което разполагаш.</p>
+        <button class="button button-primary button-large" id="heroAction">Създай план <span>→</span></button>
+      </article>
 
-        <section class="view" id="view-library" aria-labelledby="libraryTitle"><div class="page-heading"><div><p class="eyebrow">БИБЛИОТЕКА С ДВИЖЕНИЯ</p><h1 id="libraryTitle">Упражнения.</h1><p class="lead">Практични насоки за по-уверено изпълнение.</p></div></div><div class="library-tools"><label class="search-box"><span>⌕</span><input id="exerciseSearch" type="search" placeholder="Търси упражнение или мускулна група…"></label><div class="filter-pills" id="groupFilters"></div></div><div class="exercise-list" id="exerciseList"></div></section>
-
-        <section class="view" id="view-progress" aria-labelledby="progressTitle"><div class="page-heading"><div><p class="eyebrow">ПОСЛЕДОВАТЕЛНОСТ В ДЕЙСТВИЕ</p><h1 id="progressTitle">Твоят <span>прогрес.</span></h1><p class="lead">Записвай тренировките си и изграждай устойчив ритъм.</p></div></div><div class="metrics-grid progress-metrics"><article class="metric-card"><div class="metric-top"><span>Тренировки общо</span><span class="metric-icon">▦</span></div><strong id="progressTotal">0</strong><div class="metric-foot"><span class="metric-note">Всички завършени сесии</span></div></article><article class="metric-card"><div class="metric-top"><span>Този месец</span><span class="metric-icon">✳</span></div><strong id="progressMonth">0</strong><div class="metric-foot"><span class="metric-note">Всяка сесия е крачка напред.</span></div></article><article class="metric-card"><div class="metric-top"><span>Общ обем</span><span class="metric-icon">↗</span></div><strong id="progressVolume">0 <small>кг</small></strong><div class="metric-foot"><span class="metric-note">Сбор от записаните серии и тежести.</span></div></article></div><section class="panel history-panel"><div class="panel-head"><div><p class="eyebrow">ИСТОРИЯ</p><h3>Последни тренировки</h3></div></div><div id="historyList"></div></section></section>
-        <footer class="app-footer"><span>IRONFORM <i>TRAINING STUDIO</i></span><span>Изградено за устойчив напредък.</span></footer>
+      <div class="quick-stats" aria-label="Седмичен напредък">
+        <div class="quick-stat"><span>Тази седмица</span><strong id="metricSessions">0 <small>/ 0</small></strong><div class="mini-progress"><i id="weeklyBar"></i></div><small id="weeklyCaption">Създай план, за да започнеш</small></div>
+        <div class="quick-stat"><span>Общо тренировки</span><strong id="metricTotal">0</strong><small>записани сесии</small></div>
       </div>
-    </main>
-  </div>
 
-  <nav class="mobile-nav" aria-label="Основна навигация"><button class="active" data-view="home"><span>⌂</span>Начало</button><button data-view="plan"><span>▦</span>План</button><button data-view="library"><span>◈</span>Упражнения</button><button data-view="progress"><span>↗</span>Прогрес</button></nav>
+      <section class="home-section"><div class="section-title"><div><p class="eyebrow">СЛЕДВАЩИТЕ ДНИ</p><h2>Тази седмица</h2></div><button class="plain-link" data-view="plan">Виж плана <span>→</span></button></div><div class="week-strip" id="weekStrip"></div><div class="up-next" id="upNext"></div></section>
+      <p class="safety-note">Започни с тежест, която контролираш. Спри, ако усетиш болка.</p>
+    </section>
 
-  <dialog class="dialog" id="planDialog"><form method="dialog" id="planForm"><div class="dialog-top"><div><p class="eyebrow">НАСТРОЙ ЛИЧНИЯ СИ</p><h2>Тренировъчен план</h2><p>Използвай тези настройки, за да изградиш седмична структура.</p></div><button class="icon-button dialog-close" value="cancel" aria-label="Затвори">×</button></div><div class="form-grid"><label class="field"><span>Основна цел</span><select id="goal"><option value="muscle">Мускулна маса</option><option value="strength">Сила</option><option value="fitness">Обща физическа форма</option></select></label><label class="field"><span>Тренировъчен опит</span><select id="experience"><option value="beginner">Начинаещ — до 1 година</option><option value="intermediate">Средно напреднал — 1–3 години</option><option value="advanced">Напреднал — над 3 години</option></select></label><label class="field"><span>Дни седмично</span><select id="days"><option value="2">2 дни</option><option value="3" selected>3 дни</option><option value="4">4 дни</option><option value="5">5 дни</option></select></label><label class="field"><span>Време за тренировка</span><select id="duration"><option value="30">30 минути</option><option value="45">45 минути</option><option value="60" selected>60 минути</option><option value="75">75 минути</option></select></label><label class="field field-wide"><span>Оборудване</span><div class="equipment-options"><label><input type="radio" name="equipment" value="gym" checked><span><b>Пълна зала</b><small>Щанги, дъмбели и уреди</small></span></label><label><input type="radio" name="equipment" value="dumbbells"><span><b>Дъмбели</b><small>Домашна тренировка</small></span></label><label><input type="radio" name="equipment" value="bodyweight"><span><b>Собствено тегло</b><small>Без допълнителна екипировка</small></span></label></div></label></div><div class="dialog-note"><span>ⓘ</span><p>Планът е обща тренировъчна рамка. Съобрази натоварването със здравословното си състояние и потърси квалифициран специалист при нужда.</p></div><div class="dialog-actions"><button class="button button-quiet" value="cancel">Отказ</button><button class="button button-primary" id="savePlanButton" value="default">Създай моя план <span>→</span></button></div></form></dialog>
+    <section class="view" id="view-plan" aria-labelledby="planTitle">
+      <p class="eyebrow">ПРОСТО И ЯСНО</p><h1 id="planTitle">Моят план</h1><p class="intro">Тренировъчните дни и упражненията ти.</p>
+      <div id="planContent"></div>
+    </section>
+
+    <section class="view" id="view-library" aria-labelledby="libraryTitle">
+      <p class="eyebrow">ТЕХНИКА И ДВИЖЕНИЯ</p><h1 id="libraryTitle">Упражнения</h1><p class="intro">Намери упражнение и виж как се изпълнява.</p>
+      <div class="library-tools"><label class="search-box"><span aria-hidden="true">⌕</span><input id="exerciseSearch" type="search" placeholder="Търси упражнение…" aria-label="Търси упражнение"></label><div class="filter-pills" id="groupFilters"></div></div>
+      <div class="exercise-list" id="exerciseList"></div>
+    </section>
+
+    <section class="view" id="view-progress" aria-labelledby="progressTitle">
+      <p class="eyebrow">ТВОЯТА ПОСЛЕДОВАТЕЛНОСТ</p><h1 id="progressTitle">Прогрес</h1><p class="intro">Виж какво си постигнал.</p>
+      <div class="progress-cards"><article><span>Тренировки общо</span><strong id="progressTotal">0</strong></article><article><span>Този месец</span><strong id="progressMonth">0</strong></article><article><span>Общ обем</span><strong id="progressVolume">0 <small>кг</small></strong></article></div>
+      <section class="history-panel"><h2>Последни тренировки</h2><div id="historyList"></div></section>
+    </section>
+  </main>
+
+  <nav class="mobile-nav" aria-label="Навигация"><button class="active" data-view="home"><span>⌂</span>Днес</button><button data-view="plan"><span>▦</span>План</button><button data-view="library"><span>◈</span>Упражнения</button><button data-view="progress"><span>↗</span>Прогрес</button></nav>
+
+  <dialog class="dialog setup-dialog" id="planDialog">
+    <form method="dialog" id="planForm">
+      <div class="dialog-heading"><div><p class="eyebrow" id="setupStepLabel">СТЪПКА 1 ОТ 3</p><h2>Направи свой план</h2><p id="setupStepHint">Първо избери целта си.</p></div><button class="icon-button" type="button" data-close-setup aria-label="Затвори">×</button></div>
+      <div class="wizard-bar"><i id="wizardProgress"></i></div>
+      <section class="wizard-step active" data-step="0"><h3>Каква е целта ти?</h3><div class="choice-list"><button type="button" class="choice-card" data-choice="goal" data-value="muscle"><b>Мускулна маса</b><small>Повече мускули и постепенно развитие</small><i>✓</i></button><button type="button" class="choice-card" data-choice="goal" data-value="strength"><b>Сила</b><small>Фокус върху силови упражнения</small><i>✓</i></button><button type="button" class="choice-card" data-choice="goal" data-value="fitness"><b>Обща форма</b><small>Подвижност, тонус и постоянство</small><i>✓</i></button></div></section>
+      <section class="wizard-step" data-step="1"><h3>Колко често искаш да тренираш?</h3><div class="choice-grid days-choices"><button type="button" class="choice-card compact" data-choice="days" data-value="2"><b>2 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="3"><b>3 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="4"><b>4 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="5"><b>5 дни</b></button></div><h3 class="second-question">Колко време имаш?</h3><div class="choice-grid duration-choices"><button type="button" class="choice-card compact" data-choice="duration" data-value="30"><b>30 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="45"><b>45 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="60"><b>60 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="75"><b>75 мин</b></button></div></section>
+      <section class="wizard-step" data-step="2"><h3>Какво оборудване имаш?</h3><div class="choice-list"><button type="button" class="choice-card" data-choice="equipment" data-value="gym"><b>Фитнес зала</b><small>Уреди, щанги и дъмбели</small><i>✓</i></button><button type="button" class="choice-card" data-choice="equipment" data-value="dumbbells"><b>Дъмбели</b><small>Тренировка у дома</small><i>✓</i></button><button type="button" class="choice-card" data-choice="equipment" data-value="bodyweight"><b>Само собствено тегло</b><small>Без уреди</small><i>✓</i></button></div><label class="simple-select"><span>Тренировъчен опит</span><select id="experience"><option value="beginner">Начинаещ</option><option value="intermediate">Средно напреднал</option><option value="advanced">Напреднал</option></select></label></section>
+      <select id="goal" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="muscle">Мускулна маса</option><option value="strength">Сила</option><option value="fitness">Обща физическа форма</option></select><select id="days" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select><select id="duration" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="30">30</option><option value="45">45</option><option value="60">60</option><option value="75">75</option></select><input class="visually-hidden" type="radio" name="equipment" value="gym" checked><input class="visually-hidden" type="radio" name="equipment" value="dumbbells"><input class="visually-hidden" type="radio" name="equipment" value="bodyweight">
+      <div class="wizard-actions"><button class="button button-secondary" type="button" id="wizardBack" hidden>Назад</button><button class="button button-primary" type="button" id="wizardNext">Продължи <span>→</span></button><button class="button button-primary" type="submit" id="savePlanButton" hidden>Създай плана <span>→</span></button></div>
+    </form>
+  </dialog>
 
   <dialog class="dialog workout-dialog" id="workoutDialog"><div id="workoutModalContent"></div></dialog>
   <dialog class="dialog exercise-dialog" id="exerciseDialog"><div id="exerciseDialogContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="data.js"></script>
-  <script src="planner.js?v=studio-v3"></script>
+  <script src="planner.js?v=phone-v2"></script>
 </body>
 </html>
