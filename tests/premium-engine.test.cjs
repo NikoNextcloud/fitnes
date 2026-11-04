@@ -167,12 +167,23 @@ test('each week covers major movement patterns across multi-focus plans and ligh
   }
 });
 
+test('chosen focus affects short sessions as well as standard sessions', () => {
+  const expected = { abs:'core', chest:'push', arms:'push', legs:'lower', back:'posterior', butt:'posterior' };
+  for (const [focus, pattern] of Object.entries(expected)) {
+    const mini = E.buildSession(profile({ focus, duration: 5 }), 1);
+    assert.ok(main(mini).some(s => E.patternOf(s.exerciseId) === pattern), `5m ${focus}`);
+    const standard = E.buildSession(profile({ focus, duration: 10 }), 1);
+    const emphasized = main(standard).filter(s => E.patternOf(s.exerciseId) === pattern);
+    assert.ok(emphasized.length >= 2, `10m ${focus}`);
+  }
+});
+
 test('existing plan days migrate without changing completed history or active snapshots', () => {
   const old = E.buildPlan(profile({ duration: 45 }));
   old.version = 4;
   const first = old.days[0].session;
   const upgraded = E.upgradePlan(old, [{ planId: old.id, dayId: old.days[0].id, status: 'complete' }]);
-  assert.equal(upgraded.version, 5);
+  assert.equal(upgraded.version, 6);
   assert.equal(upgraded.days[0].session, first);
   assert.notEqual(upgraded.days[2].session.id, old.days[2].session.id);
   assert.equal(upgraded.days[2].id, old.days[2].id);
