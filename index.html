@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=phone-v2">
+  <link rel="stylesheet" href="styles.css?v=home-v1">
 </head>
 <body>
   <header class="app-header">
@@ -21,13 +21,13 @@
     <section class="view active" id="view-home" aria-labelledby="homeTitle">
       <p class="eyebrow" id="welcomeDate">ТРЕНИРОВЪЧНО СТУДИО</p>
       <h1 id="homeTitle">Здравей, <span>спортист.</span></h1>
-      <p class="intro">Тук е следващата ти тренировка.</p>
+      <p class="intro">Тренировки без уреди — според твоето ниво и време.</p>
 
       <article class="today-card">
-        <span class="today-kicker"><i></i><span id="nextWorkoutBadge">ПЛАНЪТ ТЕ ЧАКА</span></span>
-        <h2 id="nextWorkoutTitle">Изгради своя ритъм.</h2>
-        <p id="nextWorkoutCopy">Създай кратък план според целта и времето, с което разполагаш.</p>
-        <button class="button button-primary button-large" id="heroAction">Създай план <span>→</span></button>
+        <span class="today-kicker"><i></i><span id="nextWorkoutBadge">28-ДНЕВНО ПРЕДИЗВИКАТЕЛСТВО</span></span>
+        <h2 id="nextWorkoutTitle">Започни с 7 минути.</h2>
+        <p id="nextWorkoutCopy">Избери зона, ниво и продължителност. Не ти трябва оборудване.</p>
+        <button class="button button-primary button-large" id="heroAction">Създай моя план <span>→</span></button>
       </article>
 
       <div class="quick-stats" aria-label="Седмичен напредък">
@@ -40,19 +40,19 @@
     </section>
 
     <section class="view" id="view-plan" aria-labelledby="planTitle">
-      <p class="eyebrow">ПРОСТО И ЯСНО</p><h1 id="planTitle">Моят план</h1><p class="intro">Тренировъчните дни и упражненията ти.</p>
+      <p class="eyebrow">28 ДНИ · БЕЗ УРЕДИ</p><h1 id="planTitle">Моят план</h1><p class="intro">Кратки сесии, лесни инструкции и дни за възстановяване.</p>
       <div id="planContent"></div>
     </section>
 
     <section class="view" id="view-library" aria-labelledby="libraryTitle">
-      <p class="eyebrow">ТЕХНИКА И ДВИЖЕНИЯ</p><h1 id="libraryTitle">Упражнения</h1><p class="intro">Намери упражнение и виж как се изпълнява.</p>
+      <p class="eyebrow">ДВИЖЕНИЯ СЪС СОБСТВЕНО ТЕГЛО</p><h1 id="libraryTitle">Упражнения</h1><p class="intro">Кратки насоки за безопасно изпълнение.</p>
       <div class="library-tools"><label class="search-box"><span aria-hidden="true">⌕</span><input id="exerciseSearch" type="search" placeholder="Търси упражнение…" aria-label="Търси упражнение"></label><div class="filter-pills" id="groupFilters"></div></div>
       <div class="exercise-list" id="exerciseList"></div>
     </section>
 
     <section class="view" id="view-progress" aria-labelledby="progressTitle">
       <p class="eyebrow">ТВОЯТА ПОСЛЕДОВАТЕЛНОСТ</p><h1 id="progressTitle">Прогрес</h1><p class="intro">Виж какво си постигнал.</p>
-      <div class="progress-cards"><article><span>Тренировки общо</span><strong id="progressTotal">0</strong></article><article><span>Този месец</span><strong id="progressMonth">0</strong></article><article><span>Общ обем</span><strong id="progressVolume">0 <small>кг</small></strong></article></div>
+      <div class="progress-cards"><article><span>Тренировки общо</span><strong id="progressTotal">0</strong></article><article><span>Този месец</span><strong id="progressMonth">0</strong></article><article><span>Последователни седмици</span><strong id="progressVolume">0</strong></article></div>
       <section class="history-panel"><h2>Последни тренировки</h2><div id="historyList"></div></section>
     </section>
   </main>
@@ -61,12 +61,12 @@
 
   <dialog class="dialog setup-dialog" id="planDialog">
     <form method="dialog" id="planForm">
-      <div class="dialog-heading"><div><p class="eyebrow" id="setupStepLabel">СТЪПКА 1 ОТ 3</p><h2>Направи свой план</h2><p id="setupStepHint">Първо избери целта си.</p></div><button class="icon-button" type="button" data-close-setup aria-label="Затвори">×</button></div>
+      <div class="dialog-heading"><div><p class="eyebrow" id="setupStepLabel">СТЪПКА 1 ОТ 3</p><h2>Твоят план за 28 дни</h2><p id="setupStepHint">Избери как искаш да се чувстваш.</p></div><button class="icon-button" type="button" data-close-setup aria-label="Затвори">×</button></div>
       <div class="wizard-bar"><i id="wizardProgress"></i></div>
-      <section class="wizard-step active" data-step="0"><h3>Каква е целта ти?</h3><div class="choice-list"><button type="button" class="choice-card" data-choice="goal" data-value="muscle"><b>Мускулна маса</b><small>Повече мускули и постепенно развитие</small><i>✓</i></button><button type="button" class="choice-card" data-choice="goal" data-value="strength"><b>Сила</b><small>Фокус върху силови упражнения</small><i>✓</i></button><button type="button" class="choice-card" data-choice="goal" data-value="fitness"><b>Обща форма</b><small>Подвижност, тонус и постоянство</small><i>✓</i></button></div></section>
-      <section class="wizard-step" data-step="1"><h3>Колко често искаш да тренираш?</h3><div class="choice-grid days-choices"><button type="button" class="choice-card compact" data-choice="days" data-value="2"><b>2 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="3"><b>3 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="4"><b>4 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="5"><b>5 дни</b></button></div><h3 class="second-question">Колко време имаш?</h3><div class="choice-grid duration-choices"><button type="button" class="choice-card compact" data-choice="duration" data-value="30"><b>30 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="45"><b>45 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="60"><b>60 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="75"><b>75 мин</b></button></div></section>
-      <section class="wizard-step" data-step="2"><h3>Какво оборудване имаш?</h3><div class="choice-list"><button type="button" class="choice-card" data-choice="equipment" data-value="gym"><b>Фитнес зала</b><small>Уреди, щанги и дъмбели</small><i>✓</i></button><button type="button" class="choice-card" data-choice="equipment" data-value="dumbbells"><b>Дъмбели</b><small>Тренировка у дома</small><i>✓</i></button><button type="button" class="choice-card" data-choice="equipment" data-value="bodyweight"><b>Само собствено тегло</b><small>Без уреди</small><i>✓</i></button></div><label class="simple-select"><span>Тренировъчен опит</span><select id="experience"><option value="beginner">Начинаещ</option><option value="intermediate">Средно напреднал</option><option value="advanced">Напреднал</option></select></label></section>
-      <select id="goal" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="muscle">Мускулна маса</option><option value="strength">Сила</option><option value="fitness">Обща физическа форма</option></select><select id="days" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select><select id="duration" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="30">30</option><option value="45">45</option><option value="60">60</option><option value="75">75</option></select><input class="visually-hidden" type="radio" name="equipment" value="gym" checked><input class="visually-hidden" type="radio" name="equipment" value="dumbbells"><input class="visually-hidden" type="radio" name="equipment" value="bodyweight">
+      <section class="wizard-step active" data-step="0"><h3>Каква е целта ти?</h3><div class="choice-list"><button type="button" class="choice-card" data-choice="goal" data-value="fitness"><b>Обща форма</b><small>Повече енергия и постоянство</small><i>✓</i></button><button type="button" class="choice-card" data-choice="goal" data-value="strength"><b>Повече сила</b><small>Постепенно по-трудни движения</small><i>✓</i></button><button type="button" class="choice-card" data-choice="goal" data-value="weightloss"><b>Изгаряне на калории</b><small>Кратки активни кръгове</small><i>✓</i></button></div></section>
+      <section class="wizard-step" data-step="1"><h3>Коя зона искаш да тренираш?</h3><div class="choice-grid focus-choices"><button type="button" class="choice-card compact" data-choice="focus" data-value="full"><b>Цяло тяло</b></button><button type="button" class="choice-card compact" data-choice="focus" data-value="abs"><b>Корем</b></button><button type="button" class="choice-card compact" data-choice="focus" data-value="chest"><b>Гърди</b></button><button type="button" class="choice-card compact" data-choice="focus" data-value="arms"><b>Ръце</b></button><button type="button" class="choice-card compact" data-choice="focus" data-value="legs"><b>Крака</b></button><button type="button" class="choice-card compact" data-choice="focus" data-value="butt"><b>Седалище</b></button><button type="button" class="choice-card compact" data-choice="focus" data-value="back"><b>Гръб</b></button></div><h3 class="second-question">Колко дни седмично?</h3><div class="choice-grid days-choices"><button type="button" class="choice-card compact" data-choice="days" data-value="3"><b>3 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="4"><b>4 дни</b></button><button type="button" class="choice-card compact" data-choice="days" data-value="5"><b>5 дни</b></button></div><h3 class="second-question">Време за тренировка</h3><div class="choice-grid duration-choices"><button type="button" class="choice-card compact" data-choice="duration" data-value="7"><b>7 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="10"><b>10 мин</b></button><button type="button" class="choice-card compact" data-choice="duration" data-value="15"><b>15 мин</b></button></div></section>
+      <section class="wizard-step" data-step="2"><h3>Избери нивото си</h3><div class="choice-list"><button type="button" class="choice-card" data-choice="experience" data-value="beginner"><b>Начинаещ</b><small>Спокойно темпо и основни движения</small><i>✓</i></button><button type="button" class="choice-card" data-choice="experience" data-value="intermediate"><b>Средно напреднал</b><small>Повече повторения и по-кратка почивка</small><i>✓</i></button><button type="button" class="choice-card" data-choice="experience" data-value="advanced"><b>Напреднал</b><small>По-предизвикателни варианти</small><i>✓</i></button></div><p class="equipment-note">Всички тренировки са без уреди. Използвай само постелка, ако имаш.</p></section>
+      <select id="goal" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="fitness">Обща физическа форма</option><option value="strength">Сила</option><option value="weightloss">Изгаряне на калории</option></select><select id="focus" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="full">Цяло тяло</option><option value="abs">Корем</option><option value="chest">Гърди</option><option value="arms">Ръце</option><option value="legs">Крака</option><option value="butt">Седалище</option><option value="back">Гръб</option></select><select id="days" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="3">3</option><option value="4">4</option><option value="5">5</option></select><select id="duration" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="7">7</option><option value="10">10</option><option value="15">15</option></select><select id="experience" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="beginner">Начинаещ</option><option value="intermediate">Средно напреднал</option><option value="advanced">Напреднал</option></select><input class="visually-hidden" type="radio" name="equipment" value="bodyweight" checked>
       <div class="wizard-actions"><button class="button button-secondary" type="button" id="wizardBack" hidden>Назад</button><button class="button button-primary" type="button" id="wizardNext">Продължи <span>→</span></button><button class="button button-primary" type="submit" id="savePlanButton" hidden>Създай плана <span>→</span></button></div>
     </form>
   </dialog>
@@ -75,6 +75,6 @@
   <dialog class="dialog exercise-dialog" id="exerciseDialog"><div id="exerciseDialogContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="data.js"></script>
-  <script src="planner.js?v=phone-v2"></script>
+  <script src="planner.js?v=home-v1"></script>
 </body>
 </html>
