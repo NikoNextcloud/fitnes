@@ -1,0 +1,712 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-11-04",
+  "catalogueDescription": "Verified exercise media for IronForm. Embeds are not downloads. Positions are not videos.",
+  "sources": {
+    "free-exercise-db": {
+      "url": "https://github.com/yuhonas/free-exercise-db",
+      "licenseUrl": "https://github.com/yuhonas/free-exercise-db/blob/main/LICENSE.md",
+      "license": "Unlicense as declared by source repository",
+      "changes": "JPEG files copied unchanged. Two duplicate hamstring photographs treated as one still."
+    },
+    "youtube": {
+      "policy": "Only direct official-creator uploads. Embedding through YouTube privacy-enhanced player; do not remove branding, download or imply endorsement.",
+      "iframeReferrerPolicy": "strict-origin-when-cross-origin",
+      "fallback": "Always show an external source link if the embedded player cannot load."
+    }
+  },
+  "exercises": {
+    "march": {
+      "id": "march",
+      "nameBg": "Марш на място",
+      "video": null,
+      "poster": null,
+      "positions": [],
+      "fallbackKind": "instructions",
+      "notes": [
+        "No exact verified video selected. Use the honest still/positions/instructions fallback; never label it as a clip."
+      ]
+    },
+    "arm-circles": {
+      "id": "arm-circles",
+      "nameBg": "Кръгове с ръце",
+      "video": null,
+      "poster": "assets/videos/posters/arm-circles-0.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/arm-circles-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Arm_Circles",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 62421
+        },
+        {
+          "src": "assets/videos/posters/arm-circles-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Arm_Circles",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 63612
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": [
+        "No exact verified video selected. Use the honest still/positions/instructions fallback; never label it as a clip."
+      ]
+    },
+    "squat": {
+      "id": "squat",
+      "nameBg": "Клек със собствено тегло",
+      "video": {
+        "id": "UYbsgiiZgao",
+        "title": "How to do a Prisoner Squat  | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/UYbsgiiZgao/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "UYbsgiiZgao",
+        "sourceUrl": "https://www.youtube.com/watch?v=UYbsgiiZgao",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/prisoner-squat",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/UYbsgiiZgao",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/squat-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/squat-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Bodyweight_Squat",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 37986
+        },
+        {
+          "src": "assets/videos/posters/squat-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Bodyweight_Squat",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 41546
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": [
+        "NASM demonstrates the prisoner-squat hand position; the movement is a bodyweight squat. Local photographs use the same hands-behind-head variation."
+      ]
+    },
+    "reverse-lunge": {
+      "id": "reverse-lunge",
+      "nameBg": "Обратни напади",
+      "video": {
+        "id": "C_P3Q-PssvY",
+        "title": "How To Do A Reverse Lunge | The Right Way | Well+Good",
+        "author": "Well+Good",
+        "authorUrl": "https://www.youtube.com/@Wellandgood",
+        "thumbnailUrl": "https://i.ytimg.com/vi/C_P3Q-PssvY/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "C_P3Q-PssvY",
+        "sourceUrl": "https://www.youtube.com/watch?v=C_P3Q-PssvY",
+        "referenceUrl": "https://www.youtube.com/watch?v=C_P3Q-PssvY",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/C_P3Q-PssvY",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": null,
+      "positions": [],
+      "fallbackKind": "instructions",
+      "notes": [
+        "Provider thumbnail is optional; an original app illustration must be the fallback when it is unavailable."
+      ],
+      "providerThumbnailUrl": "https://i.ytimg.com/vi/C_P3Q-PssvY/hqdefault.jpg"
+    },
+    "pushup": {
+      "id": "pushup",
+      "nameBg": "Лицеви опори",
+      "video": {
+        "id": "WDIpL0pjun0",
+        "title": "How to do a Push-Up | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/WDIpL0pjun0/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "WDIpL0pjun0",
+        "sourceUrl": "https://www.youtube.com/watch?v=WDIpL0pjun0",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/push-up",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/WDIpL0pjun0",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/pushup-0.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/pushup-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Pushups",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 66786
+        },
+        {
+          "src": "assets/videos/posters/pushup-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Pushups",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 64283
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "knee-pushup": {
+      "id": "knee-pushup",
+      "nameBg": "Лицеви опори от колене",
+      "video": {
+        "id": "PDr5B2jLUOw",
+        "title": "How to do a Modified Push-Up | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/PDr5B2jLUOw/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "PDr5B2jLUOw",
+        "sourceUrl": "https://www.youtube.com/watch?v=PDr5B2jLUOw",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/modified-push-up",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/PDr5B2jLUOw",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": null,
+      "positions": [],
+      "fallbackKind": "instructions",
+      "notes": [
+        "Provider thumbnail is optional; an original app illustration must be the fallback when it is unavailable."
+      ],
+      "providerThumbnailUrl": "https://i.ytimg.com/vi/PDr5B2jLUOw/hqdefault.jpg"
+    },
+    "glute-bridge": {
+      "id": "glute-bridge",
+      "nameBg": "Глутеус мост",
+      "video": {
+        "id": "Z3cY3d3BBo4",
+        "title": "How to do a Floor Bridge",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/Z3cY3d3BBo4/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "Z3cY3d3BBo4",
+        "sourceUrl": "https://www.youtube.com/watch?v=Z3cY3d3BBo4",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/floor-bridge",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/Z3cY3d3BBo4",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/glute-bridge-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/glute-bridge-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Butt_Lift_Bridge",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 57056
+        },
+        {
+          "src": "assets/videos/posters/glute-bridge-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Butt_Lift_Bridge",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 58796
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "plank": {
+      "id": "plank",
+      "nameBg": "Планк",
+      "video": {
+        "id": "mwlp75MS6Rg",
+        "title": "How to do a Plank | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/mwlp75MS6Rg/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "mwlp75MS6Rg",
+        "sourceUrl": "https://www.youtube.com/watch?v=mwlp75MS6Rg",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/plank",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/mwlp75MS6Rg",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/plank-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/plank-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Plank",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 43296
+        },
+        {
+          "src": "assets/videos/posters/plank-1.jpg",
+          "labelBg": "Задръж позицията",
+          "datasetId": "Plank",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 43135
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "dead-bug": {
+      "id": "dead-bug",
+      "nameBg": "Dead bug",
+      "video": {
+        "id": "bxn9FBrt4-A",
+        "title": "How to do a Dead Bug | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/bxn9FBrt4-A/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "bxn9FBrt4-A",
+        "sourceUrl": "https://www.youtube.com/watch?v=bxn9FBrt4-A",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/bxn9FBrt4-A",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/dead-bug-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/dead-bug-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Dead_Bug",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 45381
+        },
+        {
+          "src": "assets/videos/posters/dead-bug-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Dead_Bug",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 46759
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "bird-dog": {
+      "id": "bird-dog",
+      "nameBg": "Bird dog",
+      "video": {
+        "id": "ZdAHe9_HeEw",
+        "title": "How to do a Bird Dog | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/ZdAHe9_HeEw/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "ZdAHe9_HeEw",
+        "sourceUrl": "https://www.youtube.com/watch?v=ZdAHe9_HeEw",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/ZdAHe9_HeEw",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": null,
+      "positions": [],
+      "fallbackKind": "instructions",
+      "notes": [
+        "Provider thumbnail is optional; an original app illustration must be the fallback when it is unavailable."
+      ],
+      "providerThumbnailUrl": "https://i.ytimg.com/vi/ZdAHe9_HeEw/hqdefault.jpg"
+    },
+    "superman": {
+      "id": "superman",
+      "nameBg": "Супермен",
+      "video": {
+        "type": "local",
+        "src": "assets/videos/superman-cdc.mp4",
+        "mime": "video/mp4",
+        "title": "Muscle Strengthening at Home - Superman",
+        "author": "Centers for Disease Control and Prevention",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Muscle_Strengthening_at_Home_-_Superman.webm",
+        "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Muscle_Strengthening_at_Home_-_Superman.webm",
+        "license": "Public domain (US federal government work; PD-USGov-HHS-CDC)",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/Template:PD-USGov-HHS-CDC",
+        "changes": "Re-encoded from WebM to H.264 MP4, audio retained, no content cut.",
+        "verifiedAt": "2026-11-04",
+        "language": "en"
+      },
+      "poster": "assets/videos/posters/superman-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/superman-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Superman",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 59230
+        },
+        {
+          "src": "assets/videos/posters/superman-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Superman",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 62125
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": [
+        "The former CDC YouTube upload is unavailable (oEmbed 404), so the public-domain Wikimedia copy is used locally. This is a full simultaneous Superman demonstration, not a bird-dog or alternating-swimmer variation."
+      ]
+    },
+    "mountain-climber": {
+      "id": "mountain-climber",
+      "nameBg": "Планински катерач",
+      "video": {
+        "id": "UOGvtqv856A",
+        "title": "How to Do a Mountain Climber Plank | Abs Workout",
+        "author": "Howcast",
+        "authorUrl": "https://www.youtube.com/@howcast",
+        "thumbnailUrl": "https://i.ytimg.com/vi/UOGvtqv856A/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "UOGvtqv856A",
+        "sourceUrl": "https://www.youtube.com/watch?v=UOGvtqv856A",
+        "referenceUrl": "https://www.youtube.com/watch?v=UOGvtqv856A",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/UOGvtqv856A",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/mountain-climber-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/mountain-climber-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Mountain_Climbers",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 30166
+        },
+        {
+          "src": "assets/videos/posters/mountain-climber-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Mountain_Climbers",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 30259
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "calf-raise": {
+      "id": "calf-raise",
+      "nameBg": "Повдигане на прасци",
+      "video": {
+        "id": "4B2GWWRbKCk",
+        "title": "010 Double leg heel raise exercise - physiotherapy video",
+        "author": "Barts Health NHS Trust",
+        "authorUrl": "https://www.youtube.com/@bartshealthnhstrust3757",
+        "thumbnailUrl": "https://i.ytimg.com/vi/4B2GWWRbKCk/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "4B2GWWRbKCk",
+        "sourceUrl": "https://www.youtube.com/watch?v=4B2GWWRbKCk",
+        "referenceUrl": "https://www.bartshealth.nhs.uk/wellbeing-physiotherapy-and-pain-management-/",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/4B2GWWRbKCk",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": null,
+      "positions": [],
+      "fallbackKind": "instructions",
+      "notes": [
+        "Provider thumbnail is optional; an original app illustration must be the fallback when it is unavailable."
+      ],
+      "providerThumbnailUrl": "https://i.ytimg.com/vi/4B2GWWRbKCk/hqdefault.jpg"
+    },
+    "side-plank": {
+      "id": "side-plank",
+      "nameBg": "Страничен планк",
+      "video": {
+        "id": "44ND4bOB-T0",
+        "title": "How to do a Side Plank  | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/44ND4bOB-T0/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "44ND4bOB-T0",
+        "sourceUrl": "https://www.youtube.com/watch?v=44ND4bOB-T0",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/side-plank",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/44ND4bOB-T0",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/side-plank-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/side-plank-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Side_Bridge",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Bridge/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 69518
+        },
+        {
+          "src": "assets/videos/posters/side-plank-1.jpg",
+          "labelBg": "Задръж позицията",
+          "datasetId": "Side_Bridge",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Bridge/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 63711
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "crunch": {
+      "id": "crunch",
+      "nameBg": "Коремни преси",
+      "video": {
+        "id": "NIqgTCTd2MM",
+        "title": "How to Do a Crunch | Ab Workout",
+        "author": "Howcast",
+        "authorUrl": "https://www.youtube.com/@howcast",
+        "thumbnailUrl": "https://i.ytimg.com/vi/NIqgTCTd2MM/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "NIqgTCTd2MM",
+        "sourceUrl": "https://www.youtube.com/watch?v=NIqgTCTd2MM",
+        "referenceUrl": "https://www.youtube.com/watch?v=NIqgTCTd2MM",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/NIqgTCTd2MM",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/crunch-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/crunch-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Crunches",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 69289
+        },
+        {
+          "src": "assets/videos/posters/crunch-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Crunches",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 69225
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": []
+    },
+    "wall-sit": {
+      "id": "wall-sit",
+      "nameBg": "Клек до стена",
+      "video": {
+        "id": "XULOKw4E4P4",
+        "title": "How to Do a Wall Sit | Thighs Workout",
+        "author": "Howcast",
+        "authorUrl": "https://www.youtube.com/@howcast",
+        "thumbnailUrl": "https://i.ytimg.com/vi/XULOKw4E4P4/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "XULOKw4E4P4",
+        "sourceUrl": "https://www.youtube.com/watch?v=XULOKw4E4P4",
+        "referenceUrl": "https://www.youtube.com/watch?v=XULOKw4E4P4",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/XULOKw4E4P4",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": null,
+      "positions": [],
+      "fallbackKind": "instructions",
+      "notes": [
+        "Provider thumbnail is optional; an original app illustration must be the fallback when it is unavailable."
+      ],
+      "providerThumbnailUrl": "https://i.ytimg.com/vi/XULOKw4E4P4/hqdefault.jpg"
+    },
+    "child-pose": {
+      "id": "child-pose",
+      "nameBg": "Детска поза",
+      "video": {
+        "id": "_ZX_zTOBgp8",
+        "title": "How to do a Child's Pose Stretch | Proper Form & Technique | NASM",
+        "author": "National Academy of Sports Medicine (NASM)",
+        "authorUrl": "https://www.youtube.com/@NasmOrgPersonalTrainer",
+        "thumbnailUrl": "https://i.ytimg.com/vi/_ZX_zTOBgp8/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "_ZX_zTOBgp8",
+        "sourceUrl": "https://www.youtube.com/watch?v=_ZX_zTOBgp8",
+        "referenceUrl": "https://www.nasm.org/resource-center/exercise-library/childs-pose",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/_ZX_zTOBgp8",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/child-pose-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/child-pose-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Childs_Pose",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 33306
+        },
+        {
+          "src": "assets/videos/posters/child-pose-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Childs_Pose",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 33259
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": [
+        "Local photograph shows compact child pose with arms folded; NASM video demonstrates child pose stretch. Preserve variant labels."
+      ]
+    },
+    "hamstring-stretch": {
+      "id": "hamstring-stretch",
+      "nameBg": "Разтягане на задно бедро",
+      "video": {
+        "id": "Q-pTQsmR9Rw",
+        "title": "011 Hamstring stretch - physiotherapy video",
+        "author": "Barts Health NHS Trust",
+        "authorUrl": "https://www.youtube.com/@bartshealthnhstrust3757",
+        "thumbnailUrl": "https://i.ytimg.com/vi/Q-pTQsmR9Rw/hqdefault.jpg",
+        "verifiedEmbed": true,
+        "type": "youtube",
+        "videoId": "Q-pTQsmR9Rw",
+        "sourceUrl": "https://www.youtube.com/watch?v=Q-pTQsmR9Rw",
+        "referenceUrl": "https://www.bartshealth.nhs.uk/wellbeing-physiotherapy-and-pain-management-/",
+        "embedUrl": "https://www.youtube-nocookie.com/embed/Q-pTQsmR9Rw",
+        "rights": "Embedded official creator video. Copyright remains with the creator; no video file is redistributed.",
+        "language": "en",
+        "verifiedAt": "2026-11-04",
+        "verification": "Official source page plus YouTube oEmbed metadata."
+      },
+      "poster": "assets/videos/posters/hamstring-stretch-0.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/hamstring-stretch-0.jpg",
+          "labelBg": "Задръж позицията",
+          "datasetId": "Seated_Floor_Hamstring_Stretch",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 37257
+        }
+      ],
+      "fallbackKind": "still",
+      "notes": [
+        "Local photograph is a seated, single-leg hamstring stretch; the second dataset image is identical and intentionally omitted. NHS video is supplied as a separate demonstrated variation."
+      ]
+    },
+    "chest-stretch": {
+      "id": "chest-stretch",
+      "nameBg": "Динамично разтягане на гърди",
+      "video": null,
+      "poster": "assets/videos/posters/chest-stretch-1.jpg",
+      "positions": [
+        {
+          "src": "assets/videos/posters/chest-stretch-0.jpg",
+          "labelBg": "Подготовка",
+          "datasetId": "Dynamic_Chest_Stretch",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dynamic_Chest_Stretch/0.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 22490
+        },
+        {
+          "src": "assets/videos/posters/chest-stretch-1.jpg",
+          "labelBg": "Движение / позиция",
+          "datasetId": "Dynamic_Chest_Stretch",
+          "sourceUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dynamic_Chest_Stretch/1.jpg",
+          "license": "Unlicense (as declared by source repository)",
+          "author": "Free Exercise DB contributors / yuhonas",
+          "bytes": 22666
+        }
+      ],
+      "fallbackKind": "positions",
+      "notes": [
+        "Dynamic chest stretch: move arms open and closed. Do not present these as a static doorway stretch.",
+        "No exact verified video selected. Use the honest still/positions/instructions fallback; never label it as a clip."
+      ]
+    }
+  }
+}
