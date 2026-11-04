@@ -148,3 +148,27 @@ test('timer formatting carries fractions into minutes and never renders :60', ()
   const cases = [[0, '00:00'], [-1, '00:00'], [0.1, '00:01'], [59.1, '01:00'], [60, '01:00'], [119.9, '02:00']];
   for (const [seconds, expected] of cases) assert.equal(E.clock(seconds), expected);
 });
+
+test('selected muscle zones rotate through workout days and remain in the plan', () => {
+  const choices = ['chest', 'legs', 'abs'];
+  const plan = E.buildPlan(profile({ focus: choices[0], focuses: choices, duration: 20 }));
+  const sessions = plan.days.filter(day => !day.rest).map(day => day.session);
+  assert.deepEqual(Array.from(plan.profile.focuses), choices);
+  assert.deepEqual(Array.from(sessions, s => s.focus), Array.from({ length: sessions.length }, (_, i) => choices[i % choices.length]));
+  for (const session of sessions) {
+    assert.equal(session.title, D.focuses.find(x => x.id === session.focus).name);
+    assert.ok(main(session).some(s => D.exercises.find(e => e.id === s.exerciseId).focus === session.focus));
+  }
+});
+
+test('new session durations remain feasible across goals and levels', () => {
+  for (const duration of [5, 10, 15, 20, 30, 45]) {
+    for (const level of Object.keys(D.levels)) {
+      for (const goal of Object.keys(D.goals)) {
+        const s = E.buildSession(profile({ focus: 'back', duration, level, goal }), 22);
+        assert.ok(Math.abs(s.estimatedSeconds - duration * 60) <= 90, `${duration}/${level}/${goal}`);
+        assert.ok(s.steps.length < 60);
+      }
+    }
+  }
+});
