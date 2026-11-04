@@ -183,8 +183,50 @@ test('existing plan days migrate without changing completed history or active sn
   old.version = 4;
   const first = old.days[0].session;
   const upgraded = E.upgradePlan(old, [{ planId: old.id, dayId: old.days[0].id, status: 'complete' }]);
-  assert.equal(upgraded.version, 6);
+  assert.equal(upgraded.version, 7);
   assert.equal(upgraded.days[0].session, first);
   assert.notEqual(upgraded.days[2].session.id, old.days[2].session.id);
   assert.equal(upgraded.days[2].id, old.days[2].id);
+});
+
+test('equipment prerequisites hold for all plans, levels, durations and selected tools', () => {
+  const selections = [[], ...Object.keys(D.equipment).map(id => [id]), ['bands','dumbbells'], ['dumbbells','barbell','machines','pullupbar']];
+  for (const equipment of selections) for (const level of Object.keys(D.levels)) for (const duration of [5, 10, 20, 45]) {
+    const plan = E.buildPlan(profile({ equipment, venue:equipment.length?'gym':'home', level, duration, focuses:['back','arms'], focus:'back' }));
+    assert.deepEqual(Array.from(plan.profile.equipment), equipment);
+    for (const day of plan.days.filter(d => !d.rest)) {
+      const session = day.session;
+      assert.ok(session.estimatedSeconds <= duration * 60 + 70, `${equipment}/${level}/${duration}/${day.number} time`);
+      for (const step of session.steps) for (const requirement of exercise(step.exerciseId).requires) {
+        assert.ok(equipment.includes(requirement), `${step.exerciseId} requires ${requirement}`);
+      }
+      if (duration >= 10 && equipment.some(id => ['bands','dumbbells','kettlebell','machines'].includes(id) || (id === 'barbell' && level !== 'beginner') || (id === 'pullupbar' && level !== 'beginner'))) {
+        assert.ok(main(session).some(s => E.patternOf(s.exerciseId) === 'pull'), `${equipment}/${level}/${duration}/${day.number} no pull`);
+      }
+    }
+  }
+});
+
+test('selected equipment changes exercise choice and a focus on arms uses curls when available', () => {
+  const none = E.buildSession(profile({focus:'back',duration:20}),1);
+  const bands = E.buildSession(profile({focus:'back',duration:20,equipment:['bands']}),1);
+  assert.ok(!main(none).some(s => exercise(s.exerciseId).requires.length));
+  assert.ok(main(bands).some(s => s.exerciseId==='band-row'));
+  const arms = E.buildSession(profile({focus:'arms',duration:10,equipment:['dumbbells']}),1);
+  assert.ok(main(arms).some(s => s.exerciseId==='db-hammer-curl'));
+  const express = E.buildSession(profile({focus:'arms',duration:5,equipment:['dumbbells']}),1);
+  assert.ok(main(express).some(s => s.exerciseId==='db-hammer-curl'));
+  const mixed=E.buildPlan(profile({focus:'full',equipment:['bands','dumbbells'],duration:20}));
+  const requirements=new Set(mixed.days.filter(d=>!d.rest).flatMap(d=>main(d.session).flatMap(s=>exercise(s.exerciseId).requires)));
+  assert.ok(requirements.has('bands') && requirements.has('dumbbells'));
+});
+
+test('version 6 plans migrate to explicit home/no equipment without overwriting completed sessions', () => {
+  const old = E.buildPlan(profile()); old.version=6; delete old.profile.venue; delete old.profile.equipment;
+  const completed=old.days[0].session;
+  const next=E.upgradePlan(old,[{planId:old.id,dayId:old.days[0].id,status:'complete'}]);
+  assert.equal(next.version,7);
+  assert.equal(next.days[0].session,completed);
+  assert.equal(next.profile.venue,'home');
+  assert.deepEqual(Array.from(next.profile.equipment),[]);
 });
