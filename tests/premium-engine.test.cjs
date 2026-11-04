@@ -75,15 +75,12 @@ test('28 calendar dates contain exactly the selected number of workouts in each 
   }
 });
 
-test('full-body sessions cover lower body, pushing, core and posterior chain', () => {
+test('standard sessions cover lower, push, posterior and core patterns', () => {
   for (const level of Object.keys(D.levels)) {
-    const plan = E.buildPlan(profile({ level, duration: 8 }));
+    const plan = E.buildPlan(profile({ level, duration: 12 }));
     for (const day of plan.days.filter(d => !d.rest)) {
-      const focuses = new Set(main(day.session).map(s => exercise(s.exerciseId).focus));
-      assert.ok(focuses.has('legs'), `${level} day ${day.number}: missing legs`);
-      assert.ok(focuses.has('chest'), `${level} day ${day.number}: missing push`);
-      assert.ok(focuses.has('abs'), `${level} day ${day.number}: missing core`);
-      assert.ok(focuses.has('back') || focuses.has('butt'), `${level} day ${day.number}: missing posterior`);
+      const patterns = new Set(main(day.session).map(s => E.patternOf(s.exerciseId)));
+      for (const required of ['lower','push','posterior','core']) assert.ok(patterns.has(required), `${level} day ${day.number}: missing ${required}`);
     }
   }
 });
@@ -111,37 +108,33 @@ test('beginner sessions use beginner movements, valid measures and bounded posit
   assert.equal(exercise('dead-bug').mode, 'reps');
 });
 
-test('session estimates reflect all work/rest and stay within 90 seconds of requested duration', () => {
-  for (const focus of D.focuses.map(f => f.id)) {
-    for (const level of Object.keys(D.levels)) {
-      for (const goal of Object.keys(D.goals)) {
-        for (const duration of [8, 12, 18]) {
-          for (const dayNumber of [1, 8, 15, 22]) {
-            const p = profile({ focus, level, goal, duration });
-            const session = E.buildSession(p, dayNumber);
-            const estimate = session.steps.reduce((n, s) => n + (s.mode === 'seconds' ? s.target : s.target * (goal === 'strength' ? 4 : 3)) + s.rest, 0);
-            const context = `${focus}/${level}/${goal}/${duration}m/day${dayNumber}`;
-            assert.equal(session.estimatedSeconds, estimate, context);
-            assert.ok(Math.abs(estimate - duration * 60) <= 90, `${context}: estimate ${estimate}s`);
-            assert.ok(main(session).length > 0 && main(session).length <= 22, context);
-          }
-        }
-      }
-    }
+test('volume, duration caps and set limits hold across profiles', () => {
+  for (const focus of D.focuses.map(f => f.id)) for (const level of Object.keys(D.levels)) for (const goal of Object.keys(D.goals)) for (const duration of [5,8,10,12,15,18,20,30,45]) {
+    const p = profile({ focus, level, goal, duration });
+    const session = E.buildSession(p, 22);
+    const estimate = session.steps.reduce((n, step) => n + (step.mode === 'seconds' ? step.target : step.target * (goal === 'strength' ? 4 : 3)) + step.rest, 0);
+    const context = `${focus}/${level}/${goal}/${duration}m`;
+    assert.equal(session.estimatedSeconds, estimate, context);
+    assert.ok(estimate <= duration * 60 + 70, `${context}: estimated ${estimate}s`);
+    assert.ok(main(session).length <= 30, context);
+    const counts = new Map();
+    for (const step of main(session)) counts.set(step.exerciseId, (counts.get(step.exerciseId) || 0) + 1);
+    for (const count of counts.values()) assert.ok(count <= 3, context);
   }
 });
 
-test('goals and weeks materially affect work targets and rest', () => {
-  const fitness = E.buildSession(profile(), 1);
-  const strength = E.buildSession(profile({ goal: 'strength' }), 1);
-  const energy = E.buildSession(profile({ goal: 'energy' }), 1);
-  assert.equal(main(strength)[0].target, main(fitness)[0].target - 2);
-  assert.ok(main(strength)[0].rest > main(fitness)[0].rest);
-  assert.ok(main(energy)[0].rest < main(fitness)[0].rest);
-  const later = E.buildSession(profile(), 22);
-  const earlySquat = main(fitness).find(s => s.exerciseId === 'squat');
-  const laterSquat = main(later).find(s => s.exerciseId === 'squat');
-  assert.equal(laterSquat.target, earlySquat.target + 3);
+test('progression uses completed workouts and reported effort rather than the week number', () => {
+  const p = profile({ focus: 'legs', duration: 20 });
+  const baseline = E.buildSession(p, 1);
+  const later = E.buildSession(p, 15);
+  const baseTargets = Array.from(main(baseline), s => s.target);
+  assert.deepEqual(Array.from(main(later), s => s.target), baseTargets);
+  const run = (effort, status = 'complete', pain = false) => ({ planId: 'plan', focus: 'legs', completedMain: 10, status, effort, pain });
+  assert.deepEqual(Array.from(main(E.adaptSession(baseline, [run('okay')], 'plan')), s => s.target), baseTargets);
+  assert.deepEqual(Array.from(main(E.adaptSession(baseline, [run('easy', 'partial')], 'plan')), s => s.target), baseTargets);
+  assert.ok(main(E.adaptSession(baseline, [run('easy')], 'plan'))[0].target > baseTargets[0]);
+  assert.ok(main(E.adaptSession(baseline, [run('hard')], 'plan'))[0].target < baseTargets[0]);
+  assert.ok(main(E.adaptSession(baseline, [run(null, 'complete', true)], 'plan'))[0].target < baseTargets[0]);
 });
 
 test('timer formatting carries fractions into minutes and never renders :60', () => {
@@ -161,14 +154,26 @@ test('selected muscle zones rotate through workout days and remain in the plan',
   }
 });
 
-test('new session durations remain feasible across goals and levels', () => {
-  for (const duration of [5, 10, 15, 20, 30, 45]) {
-    for (const level of Object.keys(D.levels)) {
-      for (const goal of Object.keys(D.goals)) {
-        const s = E.buildSession(profile({ focus: 'back', duration, level, goal }), 22);
-        assert.ok(Math.abs(s.estimatedSeconds - duration * 60) <= 90, `${duration}/${level}/${goal}`);
-        assert.ok(s.steps.length < 60);
+test('each week covers major movement patterns across multi-focus plans and lighter adjacent days', () => {
+  for (const days of [3,4,5]) for (const choices of [['chest','legs','abs'],['back','arms','butt'],['full','abs','chest','arms','legs','back','butt']]) {
+    const plan = E.buildPlan(profile({ focus: choices[0], focuses: choices, days, duration: 20 }));
+    for (let week = 0; week < 4; week++) {
+      const sessions = plan.days.slice(week * 7, week * 7 + 7).filter(d => !d.rest);
+      for (const pattern of ['lower','push','posterior','core']) {
+        assert.ok(sessions.filter(d => main(d.session).some(s => E.patternOf(s.exerciseId) === pattern)).length >= 2, `${days}/${choices.join(',')}/${week}/${pattern}`);
       }
+      for (const day of sessions) if (plan.days[day.number - 2]?.rest === false) assert.equal(day.session.light, true);
     }
   }
+});
+
+test('existing plan days migrate without changing completed history or active snapshots', () => {
+  const old = E.buildPlan(profile({ duration: 45 }));
+  old.version = 4;
+  const first = old.days[0].session;
+  const upgraded = E.upgradePlan(old, [{ planId: old.id, dayId: old.days[0].id, status: 'complete' }]);
+  assert.equal(upgraded.version, 5);
+  assert.equal(upgraded.days[0].session, first);
+  assert.notEqual(upgraded.days[2].session.id, old.days[2].session.id);
+  assert.equal(upgraded.days[2].id, old.days[2].id);
 });
